@@ -1,0 +1,10 @@
+{
+  "categories": [
+    { "id": "cabinetry", "title": "Cabinetry", "cover": "/assets/images/gallery/cabinetry/cover.jpg" },
+    { "id": "hobby", "title": "Home & Hobby", "cover": "/assets/images/gallery/hobby/cover.jpg" },
+    { "id": "coach", "title": "Coach work", "cover": "/assets/images/gallery/coach/cover.jpg" },
+    { "id": "milling", "title": "Custom Milling", "cover": "/assets/images/gallery/milling/cover.jpg" },
+    { "id": "job", "title": "Works In Progress", "cover": "/assets/images/gallery/job/cover.jpg" }
+  ],
+  "photos": []
+}
