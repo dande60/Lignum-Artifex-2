@@ -25,17 +25,22 @@
         const card = document.createElement("div");
         card.className = "album-card";
 
+        const tile = document.createElement("div");
+        tile.className = "category-gallery-tile";
+
         const link = document.createElement("a");
         link.href = photo.src;
-        link.setAttribute("data-lightbox", categoryId);
+        link.setAttribute("data-lightbox", "portfolio");
         link.setAttribute("data-title", photo.title || photo.alt || "");
 
         const image = document.createElement("img");
+        image.className = "category-gallery-thumb";
         image.src = photo.src;
         image.alt = photo.alt || photo.title || "Gallery photo";
 
         link.appendChild(image);
-        card.appendChild(link);
+        tile.appendChild(link);
+        card.appendChild(tile);
         grid.appendChild(card);
       });
     })
