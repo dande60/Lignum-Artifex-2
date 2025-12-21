@@ -1,0 +1,250 @@
+﻿:root {
+  --primary: #192537;
+  --accent: #B09E80;
+  --background: #E9E9E9;
+  --text: #192537;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Cinzel", serif;
+  background: var(--background);
+  color: var(--text);
+  letter-spacing: 0.4px;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+.navbar {
+  background: var(--primary);
+  color: var(--background);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.navbar .nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 32px;
+  gap: 24px;
+}
+
+.navbar .logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.navbar .logo img {
+  width: 120px;
+  height: 100px;
+  object-fit: contain;
+}
+
+.navbar nav {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.navbar nav a {
+  text-transform: uppercase;
+  font-size: 14px;
+  letter-spacing: 1.2px;
+}
+
+.navbar nav a:hover,
+.navbar nav a:focus {
+  color: var(--accent);
+}
+
+.navbar .contact-link {
+  border: 1px solid var(--accent);
+  padding: 8px 16px;
+}
+
+.hero {
+  position: relative;
+  min-height: 100vh;
+  background: url("../assets/images/hero.png") center/cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--primary);
+  opacity: 0.55;
+}
+
+.hero .hero-content {
+  position: relative;
+  text-align: center;
+  color: var(--background);
+  padding: 32px;
+  max-width: 720px;
+}
+
+.hero h1 {
+  margin: 0 0 12px;
+  font-size: clamp(32px, 6vw, 56px);
+  text-transform: uppercase;
+}
+
+.hero h2 {
+  margin: 0;
+  font-size: clamp(18px, 3vw, 28px);
+  color: var(--accent);
+  letter-spacing: 2px;
+}
+
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 64px 32px 80px;
+}
+
+.page h1 {
+  margin: 0 0 16px;
+  font-size: clamp(28px, 4vw, 40px);
+  text-transform: uppercase;
+}
+
+.page h2 {
+  margin: 0 0 24px;
+  font-size: clamp(20px, 3vw, 28px);
+  color: var(--accent);
+}
+
+.page p {
+  line-height: 1.7;
+  font-size: 16px;
+}
+
+.home-body {
+  max-width: 900px;
+  margin: -80px auto 80px;
+  padding: 32px;
+  background: var(--background);
+  border-left: 2px solid var(--accent);
+  border-right: 2px solid var(--accent);
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px;
+}
+
+.album-card {
+  background: var(--background);
+  border: 1px solid var(--accent);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.album-card h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.album-card p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.album-card a {
+  border: 1px solid var(--accent);
+}
+
+.album-card a:hover,
+.album-card a:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.contact-info {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.contact-form {
+  display: grid;
+  gap: 16px;
+  max-width: 520px;
+}
+
+.contact-form label {
+  font-size: 14px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--accent);
+  background: var(--background);
+  font-family: "Cinzel", serif;
+}
+
+.contact-form button {
+  padding: 12px 24px;
+  border: 1px solid var(--accent);
+  background: var(--primary);
+  color: var(--background);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+.contact-form button:hover,
+.contact-form button:focus {
+  color: var(--accent);
+}
+
+.form-status {
+  margin-top: 12px;
+  color: var(--primary);
+}
+
+.footer {
+  padding: 24px 32px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--primary);
+}
+
+@media (max-width: 720px) {
+  .navbar .nav-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .home-body {
+    margin: 0 16px 64px;
+  }
+}
+

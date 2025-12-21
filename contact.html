@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contact</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="navbar">
+    <div class="nav-inner">
+      <a class="logo" href="index.html">
+        <img src="assets/images/logo.png" alt="Lignum Artifex logo" />
+      </a>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="gallery.html">Photo Albums</a>
+        <a href="about.html">About</a>
+        <a href="services.html">Services</a>
+        <a class="contact-link" href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page">
+    <h1>Contact</h1>
+    <div class="contact-info">
+      <div>Name: Danilo De Giorgis</div>
+      <div>Email: <a id="email-link" href=""></a></div>
+      <div>Phone: 647-233-1326</div>
+    </div>
+
+    <form class="contact-form" id="contact-form">
+      <label for="name">Name</label>
+      <input id="name" name="name" type="text" required />
+
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" required />
+
+      <label for="message">Message</label>
+      <textarea id="message" name="message" rows="5" required></textarea>
+
+      <button type="submit">Submit</button>
+      <div class="form-status" id="form-status"></div>
+    </form>
+  </main>
+
+  <script src="js/contact.js"></script>
+</body>
+</html>
+
