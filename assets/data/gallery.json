@@ -1,53 +1,73 @@
 {
   "categories": [
-    { "id": "cabinetry", "title": "Cabinetry", "cover": "/assets/images/gallery/cabinetry/cover.jpg" },
-    { "id": "hobby", "title": "Home & Hobby", "cover": "/assets/images/gallery/hobby/cover.jpg" },
-    { "id": "coach", "title": "Coach work", "cover": "/assets/images/gallery/coach/cover.jpg" },
-    { "id": "milling", "title": "Custom Milling", "cover": "/assets/images/gallery/milling/cover.jpg" },
-    { "id": "job", "title": "Works In Progress", "cover": "/assets/images/gallery/job/cover.jpg" }
+    {
+      "id": "cabinetry",
+      "title": "Cabinetry",
+      "cover": "/assets/images/gallery/cabinetry/cover.jpg"
+    },
+    {
+      "id": "hobby",
+      "title": "Home & Hobby",
+      "cover": "/assets/images/gallery/hobby/cover.jpg"
+    },
+    {
+      "id": "coach",
+      "title": "Coach work",
+      "cover": "/assets/images/gallery/coach/cover.jpg"
+    },
+    {
+      "id": "milling",
+      "title": "Custom Milling",
+      "cover": "/assets/images/gallery/milling/cover.jpg"
+    },
+    {
+      "id": "job",
+      "title": "Works In Progress",
+      "cover": "/assets/images/gallery/job/cover.jpg"
+    }
   ],
   "photos": [
     {
       "src": "/assets/images/gallery/cabinetry/IMG_1121.jpg",
       "thumb": "/assets/images/gallery/cabinetry/IMG_1121.jpg",
       "category": "cabinetry",
-      "title": "Cabinetry"
+      "title": "Img 1121"
     },
     {
       "src": "/assets/images/gallery/cabinetry/IMG_1122.jpg",
       "thumb": "/assets/images/gallery/cabinetry/IMG_1122.jpg",
       "category": "cabinetry",
-      "title": "Cabinetry"
+      "title": "Img 1122"
     },
     {
       "src": "/assets/images/gallery/cabinetry/IMG_1123.jpg",
       "thumb": "/assets/images/gallery/cabinetry/IMG_1123.jpg",
       "category": "cabinetry",
-      "title": "Cabinetry"
+      "title": "Img 1123"
     },
     {
       "src": "/assets/images/gallery/cabinetry/IMG_1125.jpg",
       "thumb": "/assets/images/gallery/cabinetry/IMG_1125.jpg",
       "category": "cabinetry",
-      "title": "Cabinetry"
+      "title": "Img 1125"
     },
     {
       "src": "/assets/images/gallery/cabinetry/IMG_1126.jpg",
       "thumb": "/assets/images/gallery/cabinetry/IMG_1126.jpg",
       "category": "cabinetry",
-      "title": "Cabinetry"
+      "title": "Img 1126"
     },
     {
       "src": "/assets/images/gallery/cabinetry/IMG_1127.jpg",
       "thumb": "/assets/images/gallery/cabinetry/IMG_1127.jpg",
       "category": "cabinetry",
-      "title": "Cabinetry"
+      "title": "Img 1127"
     },
     {
       "src": "/assets/images/gallery/cabinetry/IMG_3836.jpg",
       "thumb": "/assets/images/gallery/cabinetry/IMG_3836.jpg",
       "category": "cabinetry",
-      "title": "Cabinetry"
+      "title": "Img 3836"
     }
   ]
 }
