@@ -40,12 +40,6 @@
       "title": "Img E1743"
     },
     {
-      "src": "/assets/images/gallery/cabinetry/IMG_3836.jpg",
-      "thumb": "/assets/images/gallery/cabinetry/IMG_3836.jpg",
-      "category": "cabinetry",
-      "title": "Img 3836"
-    },
-    {
       "src": "/assets/images/gallery/cabinetry/IMG_1753.JPG",
       "thumb": "/assets/images/gallery/cabinetry/IMG_1753.JPG",
       "category": "cabinetry",
@@ -58,28 +52,10 @@
       "title": "Img 1751"
     },
     {
-      "src": "/assets/images/gallery/cabinetry/IMG_1127.jpg",
-      "thumb": "/assets/images/gallery/cabinetry/IMG_1127.jpg",
+      "src": "/assets/images/gallery/cabinetry/IMG_3836.jpg",
+      "thumb": "/assets/images/gallery/cabinetry/IMG_3836.jpg",
       "category": "cabinetry",
-      "title": "Img 1127"
-    },
-    {
-      "src": "/assets/images/gallery/cabinetry/IMG_1126.jpg",
-      "thumb": "/assets/images/gallery/cabinetry/IMG_1126.jpg",
-      "category": "cabinetry",
-      "title": "Img 1126"
-    },
-    {
-      "src": "/assets/images/gallery/cabinetry/IMG_1125.jpg",
-      "thumb": "/assets/images/gallery/cabinetry/IMG_1125.jpg",
-      "category": "cabinetry",
-      "title": "Img 1125"
-    },
-    {
-      "src": "/assets/images/gallery/cabinetry/IMG_1123.jpg",
-      "thumb": "/assets/images/gallery/cabinetry/IMG_1123.jpg",
-      "category": "cabinetry",
-      "title": "Img 1123"
+      "title": "Img 3836"
     },
     {
       "src": "/assets/images/gallery/cabinetry/IMG_1122.jpg",
@@ -94,10 +70,52 @@
       "title": "Img 1121"
     },
     {
+      "src": "/assets/images/gallery/cabinetry/IMG_1123.jpg",
+      "thumb": "/assets/images/gallery/cabinetry/IMG_1123.jpg",
+      "category": "cabinetry",
+      "title": "Img 1123"
+    },
+    {
+      "src": "/assets/images/gallery/cabinetry/IMG_1125.jpg",
+      "thumb": "/assets/images/gallery/cabinetry/IMG_1125.jpg",
+      "category": "cabinetry",
+      "title": "Img 1125"
+    },
+    {
+      "src": "/assets/images/gallery/cabinetry/IMG_1127.jpg",
+      "thumb": "/assets/images/gallery/cabinetry/IMG_1127.jpg",
+      "category": "cabinetry",
+      "title": "Img 1127"
+    },
+    {
+      "src": "/assets/images/gallery/cabinetry/IMG_1126.jpg",
+      "thumb": "/assets/images/gallery/cabinetry/IMG_1126.jpg",
+      "category": "cabinetry",
+      "title": "Img 1126"
+    },
+    {
       "src": "/assets/images/gallery/hobby/IMG_2186.JPG",
       "thumb": "/assets/images/gallery/hobby/IMG_2186.JPG",
       "category": "hobby",
       "title": "Img 2186"
+    },
+    {
+      "src": "/assets/images/gallery/hobby/IMG_0401.JPG",
+      "thumb": "/assets/images/gallery/hobby/IMG_0401.JPG",
+      "category": "hobby",
+      "title": "Img 0401"
+    },
+    {
+      "src": "/assets/images/gallery/hobby/IMG_0561.JPG",
+      "thumb": "/assets/images/gallery/hobby/IMG_0561.JPG",
+      "category": "hobby",
+      "title": "Img 0561"
+    },
+    {
+      "src": "/assets/images/gallery/hobby/IMG_1493.JPG",
+      "thumb": "/assets/images/gallery/hobby/IMG_1493.JPG",
+      "category": "hobby",
+      "title": "Img 1493"
     },
     {
       "src": "/assets/images/gallery/hobby/IMG_1645.JPG",
@@ -116,24 +134,6 @@
       "thumb": "/assets/images/gallery/hobby/IMG_1496.JPG",
       "category": "hobby",
       "title": "Img 1496"
-    },
-    {
-      "src": "/assets/images/gallery/hobby/IMG_1493.JPG",
-      "thumb": "/assets/images/gallery/hobby/IMG_1493.JPG",
-      "category": "hobby",
-      "title": "Img 1493"
-    },
-    {
-      "src": "/assets/images/gallery/hobby/IMG_0561.JPG",
-      "thumb": "/assets/images/gallery/hobby/IMG_0561.JPG",
-      "category": "hobby",
-      "title": "Img 0561"
-    },
-    {
-      "src": "/assets/images/gallery/hobby/IMG_0401.JPG",
-      "thumb": "/assets/images/gallery/hobby/IMG_0401.JPG",
-      "category": "hobby",
-      "title": "Img 0401"
     },
     {
       "src": "/assets/images/gallery/milling/locking chevron-close up.jpg",
