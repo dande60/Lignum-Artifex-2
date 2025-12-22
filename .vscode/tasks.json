@@ -2,9 +2,9 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Sync Portfolio (Commit + Push)",
+      "label": "Sync Portfolio",
       "type": "shell",
-      "command": "npm run gallery:sync",
+      "command": "node scripts/sync-portfolio.mjs",
       "group": {
         "kind": "build",
         "isDefault": true

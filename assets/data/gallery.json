@@ -28,6 +28,36 @@
   ],
   "photos": [
     {
+      "src": "/assets/images/gallery/cabinetry/IMG_3089.jpg",
+      "thumb": "/assets/images/gallery/cabinetry/IMG_3089.jpg",
+      "category": "cabinetry",
+      "title": "Img 3089"
+    },
+    {
+      "src": "/assets/images/gallery/cabinetry/IMG_3086.jpg",
+      "thumb": "/assets/images/gallery/cabinetry/IMG_3086.jpg",
+      "category": "cabinetry",
+      "title": "Img 3086"
+    },
+    {
+      "src": "/assets/images/gallery/cabinetry/IMG_3084.jpg",
+      "thumb": "/assets/images/gallery/cabinetry/IMG_3084.jpg",
+      "category": "cabinetry",
+      "title": "Img 3084"
+    },
+    {
+      "src": "/assets/images/gallery/cabinetry/IMG_3302.jpg",
+      "thumb": "/assets/images/gallery/cabinetry/IMG_3302.jpg",
+      "category": "cabinetry",
+      "title": "Img 3302"
+    },
+    {
+      "src": "/assets/images/gallery/cabinetry/IMG_3301.jpg",
+      "thumb": "/assets/images/gallery/cabinetry/IMG_3301.jpg",
+      "category": "cabinetry",
+      "title": "Img 3301"
+    },
+    {
       "src": "/assets/images/gallery/cabinetry/wine-rack-pegs.jpg",
       "thumb": "/assets/images/gallery/cabinetry/wine-rack-pegs.jpg",
       "category": "cabinetry",

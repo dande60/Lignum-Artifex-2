@@ -26,18 +26,18 @@ Static website for Lignum Artifex, a bespoke CNC woodworking shop. Built as a si
 - Open `index.html` directly, or use a simple static server (for example, VS Code Live Server).
 
 ## Update content
-- Edit portfolio categories/titles/order in `assets/data/gallery.json`
 - Add images to `assets/images/gallery/<category>/`, then run the gallery generator to rebuild `assets/data/gallery.json`
 - Replace background images by overwriting `assets/images/about-bg.jpg` or `assets/images/services-bg.jpg`
 
 ## VS Code Portfolio Workflow
 Step 1: Drag photos into `assets/images/gallery/<category>/`.
-Step 2: VS Code -> Run Task -> `Sync Portfolio (Commit + Push)`.
+Step 2: VS Code -> Run Task -> `Sync Portfolio`.
 Step 3: Done.
 
 Notes:
 - `assets/data/gallery.json` is auto-generated. Never edit it manually.
 - The optimizer overwrites images in place (Git keeps history).
+ - When working outside the VS Code task, run `node scripts/build-gallery.mjs` before committing and pushing.
 
 ## Deploy (GitHub Pages)
 - Push to the `main` branch.
