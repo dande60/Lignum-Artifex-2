@@ -1,0 +1,10 @@
+{
+  "name": "lignum-artifex-2",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "gallery:build": "node scripts/build-gallery.mjs",
+    "gallery:sync": "powershell -ExecutionPolicy Bypass -File scripts/sync-portfolio.ps1",
+    "gallery:sync:sh": "bash scripts/sync-portfolio.sh"
+  }
+}
