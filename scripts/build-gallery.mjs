@@ -15,6 +15,8 @@ const IGNORED_NAMES = new Set([".gitkeep", "placeholder.png"]);
 const toPosixPath = (value) => value.split(path.sep).join("/");
 
 const toLower = (value) => value.toLowerCase();
+const normalizePath = (value) =>
+  typeof value === "string" ? value.replace(/^\/+/, "") : value;
 
 const titleCase = (value) =>
   value
@@ -59,9 +61,14 @@ try {
 
 const data = JSON.parse(raw);
 const categories = Array.isArray(data.categories) ? data.categories : [];
+const normalizedCategories = categories.map((category) => {
+  if (!category || typeof category !== "object") return category;
+  if (!category.cover) return category;
+  return { ...category, cover: normalizePath(category.cover) };
+});
 const photos = [];
 
-for (const category of categories) {
+for (const category of normalizedCategories) {
   const categoryId = category?.id;
   if (!categoryId) continue;
   const categoryDir = path.join(GALLERY_DIR, categoryId);
@@ -122,7 +129,7 @@ for (const category of categories) {
     const relativePath = toPosixPath(
       path.join("assets", "images", "gallery", categoryId, filename)
     );
-    const src = `/${relativePath}`;
+    const src = relativePath;
     photos.push({
       src,
       thumb: src,
@@ -134,7 +141,7 @@ for (const category of categories) {
 
 const output = {
   ...data,
-  categories: data.categories,
+  categories: normalizedCategories,
   photos,
 };
 

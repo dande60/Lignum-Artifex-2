@@ -3,285 +3,303 @@
     {
       "id": "cabinetry",
       "title": "Cabinetry",
-      "cover": "/assets/images/gallery/cabinetry/cover.jpg"
+      "cover": "assets/images/gallery/cabinetry/cover.jpg"
     },
     {
       "id": "hobby",
       "title": "Home & Hobby",
-      "cover": "/assets/images/gallery/hobby/cover.jpg"
+      "cover": "assets/images/gallery/hobby/cover.jpg"
     },
     {
       "id": "coach",
       "title": "Coach work",
-      "cover": "/assets/images/gallery/coach/cover.jpg"
+      "cover": "assets/images/gallery/coach/cover.jpg"
     },
     {
       "id": "milling",
       "title": "Custom Milling",
-      "cover": "/assets/images/gallery/milling/cover.jpg"
+      "cover": "assets/images/gallery/milling/cover.jpg"
     },
     {
       "id": "job",
       "title": "Works In Progress",
-      "cover": "/assets/images/gallery/job/cover.jpg"
+      "cover": "assets/images/gallery/job/cover.jpg"
     }
   ],
   "photos": [
     {
-      "src": "/assets/images/gallery/cabinetry/wine-rack-pegs.jpg",
-      "thumb": "/assets/images/gallery/cabinetry/wine-rack-pegs.jpg",
-      "category": "cabinetry",
-      "title": "Wine Rack Pegs"
-    },
-    {
-      "src": "/assets/images/gallery/cabinetry/IMG_E1743.JPG",
-      "thumb": "/assets/images/gallery/cabinetry/IMG_E1743.JPG",
-      "category": "cabinetry",
-      "title": "Img E1743"
-    },
-    {
-      "src": "/assets/images/gallery/cabinetry/IMG_3836.jpg",
-      "thumb": "/assets/images/gallery/cabinetry/IMG_3836.jpg",
-      "category": "cabinetry",
-      "title": "Img 3836"
-    },
-    {
-      "src": "/assets/images/gallery/cabinetry/IMG_3302.jpg",
-      "thumb": "/assets/images/gallery/cabinetry/IMG_3302.jpg",
+      "src": "assets/images/gallery/cabinetry/IMG_3302.jpg",
+      "thumb": "assets/images/gallery/cabinetry/IMG_3302.jpg",
       "category": "cabinetry",
       "title": "Img 3302"
     },
     {
-      "src": "/assets/images/gallery/cabinetry/IMG_3301.jpg",
-      "thumb": "/assets/images/gallery/cabinetry/IMG_3301.jpg",
+      "src": "assets/images/gallery/cabinetry/IMG_3301.jpg",
+      "thumb": "assets/images/gallery/cabinetry/IMG_3301.jpg",
       "category": "cabinetry",
       "title": "Img 3301"
     },
     {
-      "src": "/assets/images/gallery/cabinetry/IMG_3089.jpg",
-      "thumb": "/assets/images/gallery/cabinetry/IMG_3089.jpg",
+      "src": "assets/images/gallery/cabinetry/IMG_3089.jpg",
+      "thumb": "assets/images/gallery/cabinetry/IMG_3089.jpg",
       "category": "cabinetry",
       "title": "Img 3089"
     },
     {
-      "src": "/assets/images/gallery/cabinetry/IMG_3086.jpg",
-      "thumb": "/assets/images/gallery/cabinetry/IMG_3086.jpg",
+      "src": "assets/images/gallery/cabinetry/IMG_3086.jpg",
+      "thumb": "assets/images/gallery/cabinetry/IMG_3086.jpg",
       "category": "cabinetry",
       "title": "Img 3086"
     },
     {
-      "src": "/assets/images/gallery/cabinetry/IMG_3084.jpg",
-      "thumb": "/assets/images/gallery/cabinetry/IMG_3084.jpg",
+      "src": "assets/images/gallery/cabinetry/IMG_3084.jpg",
+      "thumb": "assets/images/gallery/cabinetry/IMG_3084.jpg",
       "category": "cabinetry",
       "title": "Img 3084"
     },
     {
-      "src": "/assets/images/gallery/cabinetry/IMG_1753.JPG",
-      "thumb": "/assets/images/gallery/cabinetry/IMG_1753.JPG",
+      "src": "assets/images/gallery/cabinetry/wine-rack-pegs.jpg",
+      "thumb": "assets/images/gallery/cabinetry/wine-rack-pegs.jpg",
+      "category": "cabinetry",
+      "title": "Wine Rack Pegs"
+    },
+    {
+      "src": "assets/images/gallery/cabinetry/IMG_E1743.JPG",
+      "thumb": "assets/images/gallery/cabinetry/IMG_E1743.JPG",
+      "category": "cabinetry",
+      "title": "Img E1743"
+    },
+    {
+      "src": "assets/images/gallery/cabinetry/IMG_1753.JPG",
+      "thumb": "assets/images/gallery/cabinetry/IMG_1753.JPG",
       "category": "cabinetry",
       "title": "Img 1753"
     },
     {
-      "src": "/assets/images/gallery/cabinetry/IMG_1751.JPG",
-      "thumb": "/assets/images/gallery/cabinetry/IMG_1751.JPG",
+      "src": "assets/images/gallery/cabinetry/IMG_1751.JPG",
+      "thumb": "assets/images/gallery/cabinetry/IMG_1751.JPG",
       "category": "cabinetry",
       "title": "Img 1751"
     },
     {
-      "src": "/assets/images/gallery/cabinetry/IMG_1127.jpg",
-      "thumb": "/assets/images/gallery/cabinetry/IMG_1127.jpg",
+      "src": "assets/images/gallery/cabinetry/IMG_3836.jpg",
+      "thumb": "assets/images/gallery/cabinetry/IMG_3836.jpg",
       "category": "cabinetry",
-      "title": "Img 1127"
+      "title": "Img 3836"
     },
     {
-      "src": "/assets/images/gallery/cabinetry/IMG_1126.jpg",
-      "thumb": "/assets/images/gallery/cabinetry/IMG_1126.jpg",
-      "category": "cabinetry",
-      "title": "Img 1126"
-    },
-    {
-      "src": "/assets/images/gallery/cabinetry/IMG_1125.jpg",
-      "thumb": "/assets/images/gallery/cabinetry/IMG_1125.jpg",
-      "category": "cabinetry",
-      "title": "Img 1125"
-    },
-    {
-      "src": "/assets/images/gallery/cabinetry/IMG_1123.jpg",
-      "thumb": "/assets/images/gallery/cabinetry/IMG_1123.jpg",
-      "category": "cabinetry",
-      "title": "Img 1123"
-    },
-    {
-      "src": "/assets/images/gallery/cabinetry/IMG_1122.jpg",
-      "thumb": "/assets/images/gallery/cabinetry/IMG_1122.jpg",
+      "src": "assets/images/gallery/cabinetry/IMG_1122.jpg",
+      "thumb": "assets/images/gallery/cabinetry/IMG_1122.jpg",
       "category": "cabinetry",
       "title": "Img 1122"
     },
     {
-      "src": "/assets/images/gallery/cabinetry/IMG_1121.jpg",
-      "thumb": "/assets/images/gallery/cabinetry/IMG_1121.jpg",
+      "src": "assets/images/gallery/cabinetry/IMG_1121.jpg",
+      "thumb": "assets/images/gallery/cabinetry/IMG_1121.jpg",
       "category": "cabinetry",
       "title": "Img 1121"
     },
     {
-      "src": "/assets/images/gallery/hobby/IMG_2186.JPG",
-      "thumb": "/assets/images/gallery/hobby/IMG_2186.JPG",
+      "src": "assets/images/gallery/cabinetry/IMG_1123.jpg",
+      "thumb": "assets/images/gallery/cabinetry/IMG_1123.jpg",
+      "category": "cabinetry",
+      "title": "Img 1123"
+    },
+    {
+      "src": "assets/images/gallery/cabinetry/IMG_1125.jpg",
+      "thumb": "assets/images/gallery/cabinetry/IMG_1125.jpg",
+      "category": "cabinetry",
+      "title": "Img 1125"
+    },
+    {
+      "src": "assets/images/gallery/cabinetry/IMG_1127.jpg",
+      "thumb": "assets/images/gallery/cabinetry/IMG_1127.jpg",
+      "category": "cabinetry",
+      "title": "Img 1127"
+    },
+    {
+      "src": "assets/images/gallery/cabinetry/IMG_1126.jpg",
+      "thumb": "assets/images/gallery/cabinetry/IMG_1126.jpg",
+      "category": "cabinetry",
+      "title": "Img 1126"
+    },
+    {
+      "src": "assets/images/gallery/hobby/IMG_2186.JPG",
+      "thumb": "assets/images/gallery/hobby/IMG_2186.JPG",
       "category": "hobby",
       "title": "Img 2186"
     },
     {
-      "src": "/assets/images/gallery/hobby/IMG_1503.JPG",
-      "thumb": "/assets/images/gallery/hobby/IMG_1503.JPG",
-      "category": "hobby",
-      "title": "Img 1503"
-    },
-    {
-      "src": "/assets/images/gallery/hobby/IMG_1645.JPG",
-      "thumb": "/assets/images/gallery/hobby/IMG_1645.JPG",
-      "category": "hobby",
-      "title": "Img 1645"
-    },
-    {
-      "src": "/assets/images/gallery/hobby/IMG_1496.JPG",
-      "thumb": "/assets/images/gallery/hobby/IMG_1496.JPG",
-      "category": "hobby",
-      "title": "Img 1496"
-    },
-    {
-      "src": "/assets/images/gallery/hobby/IMG_1493.JPG",
-      "thumb": "/assets/images/gallery/hobby/IMG_1493.JPG",
-      "category": "hobby",
-      "title": "Img 1493"
-    },
-    {
-      "src": "/assets/images/gallery/hobby/IMG_0561.JPG",
-      "thumb": "/assets/images/gallery/hobby/IMG_0561.JPG",
-      "category": "hobby",
-      "title": "Img 0561"
-    },
-    {
-      "src": "/assets/images/gallery/hobby/IMG_0401.JPG",
-      "thumb": "/assets/images/gallery/hobby/IMG_0401.JPG",
+      "src": "assets/images/gallery/hobby/IMG_0401.JPG",
+      "thumb": "assets/images/gallery/hobby/IMG_0401.JPG",
       "category": "hobby",
       "title": "Img 0401"
     },
     {
-      "src": "/assets/images/gallery/milling/locking chevron-close up.jpg",
-      "thumb": "/assets/images/gallery/milling/locking chevron-close up.jpg",
+      "src": "assets/images/gallery/hobby/IMG_0561.JPG",
+      "thumb": "assets/images/gallery/hobby/IMG_0561.JPG",
+      "category": "hobby",
+      "title": "Img 0561"
+    },
+    {
+      "src": "assets/images/gallery/hobby/IMG_1493.JPG",
+      "thumb": "assets/images/gallery/hobby/IMG_1493.JPG",
+      "category": "hobby",
+      "title": "Img 1493"
+    },
+    {
+      "src": "assets/images/gallery/hobby/IMG_1645.JPG",
+      "thumb": "assets/images/gallery/hobby/IMG_1645.JPG",
+      "category": "hobby",
+      "title": "Img 1645"
+    },
+    {
+      "src": "assets/images/gallery/hobby/IMG_1503.JPG",
+      "thumb": "assets/images/gallery/hobby/IMG_1503.JPG",
+      "category": "hobby",
+      "title": "Img 1503"
+    },
+    {
+      "src": "assets/images/gallery/hobby/IMG_1496.JPG",
+      "thumb": "assets/images/gallery/hobby/IMG_1496.JPG",
+      "category": "hobby",
+      "title": "Img 1496"
+    },
+    {
+      "src": "assets/images/gallery/milling/locking chevron-close up.jpg",
+      "thumb": "assets/images/gallery/milling/locking chevron-close up.jpg",
       "category": "milling",
       "title": "Locking Chevron Close Up"
     },
     {
-      "src": "/assets/images/gallery/milling/VDQZ6300.JPG",
-      "thumb": "/assets/images/gallery/milling/VDQZ6300.JPG",
+      "src": "assets/images/gallery/milling/VDQZ6300.JPG",
+      "thumb": "assets/images/gallery/milling/VDQZ6300.JPG",
       "category": "milling",
       "title": "Vdqz6300"
     },
     {
-      "src": "/assets/images/gallery/milling/Samurai Carving.jpg",
-      "thumb": "/assets/images/gallery/milling/Samurai Carving.jpg",
+      "src": "assets/images/gallery/milling/Samurai Carving.jpg",
+      "thumb": "assets/images/gallery/milling/Samurai Carving.jpg",
       "category": "milling",
       "title": "Samurai Carving"
     },
     {
-      "src": "/assets/images/gallery/milling/IMG_E0937.JPG",
-      "thumb": "/assets/images/gallery/milling/IMG_E0937.JPG",
+      "src": "assets/images/gallery/milling/IMG_E0937.JPG",
+      "thumb": "assets/images/gallery/milling/IMG_E0937.JPG",
       "category": "milling",
       "title": "Img E0937"
     },
     {
-      "src": "/assets/images/gallery/milling/IMG_4051.jpg",
-      "thumb": "/assets/images/gallery/milling/IMG_4051.jpg",
+      "src": "assets/images/gallery/milling/IMG_4051.jpg",
+      "thumb": "assets/images/gallery/milling/IMG_4051.jpg",
       "category": "milling",
       "title": "Img 4051"
     },
     {
-      "src": "/assets/images/gallery/milling/IMG_4043.jpg",
-      "thumb": "/assets/images/gallery/milling/IMG_4043.jpg",
+      "src": "assets/images/gallery/milling/IMG_4043.jpg",
+      "thumb": "assets/images/gallery/milling/IMG_4043.jpg",
       "category": "milling",
       "title": "Img 4043"
     },
     {
-      "src": "/assets/images/gallery/milling/IMG_3916.jpg",
-      "thumb": "/assets/images/gallery/milling/IMG_3916.jpg",
+      "src": "assets/images/gallery/milling/IMG_3916.jpg",
+      "thumb": "assets/images/gallery/milling/IMG_3916.jpg",
       "category": "milling",
       "title": "Img 3916"
     },
     {
-      "src": "/assets/images/gallery/milling/Corbel Custom Milling.jpg",
-      "thumb": "/assets/images/gallery/milling/Corbel Custom Milling.jpg",
+      "src": "assets/images/gallery/milling/Corbel Custom Milling.jpg",
+      "thumb": "assets/images/gallery/milling/Corbel Custom Milling.jpg",
       "category": "milling",
       "title": "Corbel Custom Milling"
     },
     {
-      "src": "/assets/images/gallery/job/IMG_4026.jpg",
-      "thumb": "/assets/images/gallery/job/IMG_4026.jpg",
+      "src": "assets/images/gallery/job/LRUK2040.JPG",
+      "thumb": "assets/images/gallery/job/LRUK2040.JPG",
+      "category": "job",
+      "title": "Lruk2040"
+    },
+    {
+      "src": "assets/images/gallery/job/KKJJ1130.JPG",
+      "thumb": "assets/images/gallery/job/KKJJ1130.JPG",
+      "category": "job",
+      "title": "Kkjj1130"
+    },
+    {
+      "src": "assets/images/gallery/job/IMG_2770.jpg",
+      "thumb": "assets/images/gallery/job/IMG_2770.jpg",
+      "category": "job",
+      "title": "Img 2770"
+    },
+    {
+      "src": "assets/images/gallery/job/IMG_4026.jpg",
+      "thumb": "assets/images/gallery/job/IMG_4026.jpg",
       "category": "job",
       "title": "Img 4026"
     },
     {
-      "src": "/assets/images/gallery/job/IMG_3299.jpg",
-      "thumb": "/assets/images/gallery/job/IMG_3299.jpg",
+      "src": "assets/images/gallery/job/IMG_3299.jpg",
+      "thumb": "assets/images/gallery/job/IMG_3299.jpg",
       "category": "job",
       "title": "Img 3299"
     },
     {
-      "src": "/assets/images/gallery/job/IMG_3298.jpg",
-      "thumb": "/assets/images/gallery/job/IMG_3298.jpg",
+      "src": "assets/images/gallery/job/IMG_3298.jpg",
+      "thumb": "assets/images/gallery/job/IMG_3298.jpg",
       "category": "job",
       "title": "Img 3298"
     },
     {
-      "src": "/assets/images/gallery/job/IMG_1744.JPG",
-      "thumb": "/assets/images/gallery/job/IMG_1744.JPG",
+      "src": "assets/images/gallery/job/IMG_1744.JPG",
+      "thumb": "assets/images/gallery/job/IMG_1744.JPG",
       "category": "job",
       "title": "Img 1744"
     },
     {
-      "src": "/assets/images/gallery/job/IMG_1001.JPG",
-      "thumb": "/assets/images/gallery/job/IMG_1001.JPG",
+      "src": "assets/images/gallery/job/IMG_1001.JPG",
+      "thumb": "assets/images/gallery/job/IMG_1001.JPG",
       "category": "job",
       "title": "Img 1001"
     },
     {
-      "src": "/assets/images/gallery/job/IMG_0905.JPG",
-      "thumb": "/assets/images/gallery/job/IMG_0905.JPG",
+      "src": "assets/images/gallery/job/IMG_0905.JPG",
+      "thumb": "assets/images/gallery/job/IMG_0905.JPG",
       "category": "job",
       "title": "Img 0905"
     },
     {
-      "src": "/assets/images/gallery/job/IMG_0898.jpg",
-      "thumb": "/assets/images/gallery/job/IMG_0898.jpg",
+      "src": "assets/images/gallery/job/IMG_0898.jpg",
+      "thumb": "assets/images/gallery/job/IMG_0898.jpg",
       "category": "job",
       "title": "Img 0898"
     },
     {
-      "src": "/assets/images/gallery/job/IMG_0885.JPG",
-      "thumb": "/assets/images/gallery/job/IMG_0885.JPG",
+      "src": "assets/images/gallery/job/IMG_0885.JPG",
+      "thumb": "assets/images/gallery/job/IMG_0885.JPG",
       "category": "job",
       "title": "Img 0885"
     },
     {
-      "src": "/assets/images/gallery/job/IMG_0746.JPG",
-      "thumb": "/assets/images/gallery/job/IMG_0746.JPG",
+      "src": "assets/images/gallery/job/IMG_0746.JPG",
+      "thumb": "assets/images/gallery/job/IMG_0746.JPG",
       "category": "job",
       "title": "Img 0746"
     },
     {
-      "src": "/assets/images/gallery/job/IMG_0420.JPG",
-      "thumb": "/assets/images/gallery/job/IMG_0420.JPG",
+      "src": "assets/images/gallery/job/IMG_0420.JPG",
+      "thumb": "assets/images/gallery/job/IMG_0420.JPG",
       "category": "job",
       "title": "Img 0420"
     },
     {
-      "src": "/assets/images/gallery/job/IMG_0088.JPG",
-      "thumb": "/assets/images/gallery/job/IMG_0088.JPG",
+      "src": "assets/images/gallery/job/IMG_0088.JPG",
+      "thumb": "assets/images/gallery/job/IMG_0088.JPG",
       "category": "job",
       "title": "Img 0088"
     },
     {
-      "src": "/assets/images/gallery/job/Crown-Molding Milling.jpg",
-      "thumb": "/assets/images/gallery/job/Crown-Molding Milling.jpg",
+      "src": "assets/images/gallery/job/Crown-Molding Milling.jpg",
+      "thumb": "assets/images/gallery/job/Crown-Molding Milling.jpg",
       "category": "job",
       "title": "Crown Molding Milling"
     }

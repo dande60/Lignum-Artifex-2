@@ -1,6 +1,8 @@
 (() => {
   const grid = document.getElementById("gallery-categories");
   if (!grid) return;
+  const normalizePath = (value) =>
+    typeof value === "string" ? value.replace(/^\/+/, "") : value;
 
   fetch("assets/data/gallery.json")
     .then((response) => response.json())
@@ -16,7 +18,7 @@
         link.href = `gallery-category.html?cat=${encodeURIComponent(category.id)}`;
 
         const image = document.createElement("img");
-        image.src = category.cover;
+        image.src = normalizePath(category.cover);
         image.alt = category.title;
 
         const title = document.createElement("h3");
