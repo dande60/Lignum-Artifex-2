@@ -9,11 +9,12 @@ const SUPPORTED_EXTS = new Set([
   ".jpeg",
   ".png",
   ".webp",
-  ".gif",
-  ".avif",
 ]);
+const IGNORED_NAMES = new Set([".gitkeep", "placeholder.png"]);
 
 const toPosixPath = (value) => value.split(path.sep).join("/");
+
+const toLower = (value) => value.toLowerCase();
 
 const titleCase = (value) =>
   value
@@ -29,9 +30,22 @@ const deriveTitle = (filename) => {
 };
 
 const isCoverImage = (filename) =>
-  filename.replace(/\.[^.]+$/, "").toLowerCase() === "cover";
+  toLower(filename.replace(/\.[^.]+$/, "")) === "cover";
 
 const collator = new Intl.Collator("en", { numeric: true, sensitivity: "base" });
+const compareNewestFirst = (a, b) =>
+  b.mtimeMs - a.mtimeMs || collator.compare(a.name, b.name);
+
+const warnings = [];
+const counts = {
+  supported: 0,
+  ignored: 0,
+  ignoredHeic: 0,
+  ignoredCover: 0,
+  ignoredPlaceholder: 0,
+  ignoredGitkeep: 0,
+  ignoredUnsupported: 0,
+};
 
 let raw;
 try {
@@ -62,14 +76,49 @@ for (const category of categories) {
     throw error;
   }
 
-  const files = entries
-    .filter((entry) => entry.isFile())
-    .map((entry) => entry.name)
-    .filter((name) => SUPPORTED_EXTS.has(path.extname(name).toLowerCase()))
-    .filter((name) => !isCoverImage(name))
-    .sort((a, b) => collator.compare(a, b));
+  const files = [];
+  for (const entry of entries) {
+    if (!entry.isFile()) continue;
+    const name = entry.name;
+    const nameLower = toLower(name);
+    const extLower = toLower(path.extname(name));
 
-  for (const filename of files) {
+    if (IGNORED_NAMES.has(nameLower)) {
+      counts.ignored++;
+      if (nameLower === "placeholder.png") counts.ignoredPlaceholder++;
+      if (nameLower === ".gitkeep") counts.ignoredGitkeep++;
+      continue;
+    }
+
+    if (isCoverImage(name)) {
+      counts.ignored++;
+      counts.ignoredCover++;
+      continue;
+    }
+
+    if (extLower === ".heic") {
+      counts.ignored++;
+      counts.ignoredHeic++;
+      warnings.push(`Ignored unsupported HEIC file: ${categoryId}/${name}`);
+      continue;
+    }
+
+    if (!SUPPORTED_EXTS.has(extLower)) {
+      counts.ignored++;
+      counts.ignoredUnsupported++;
+      warnings.push(`Ignored unsupported file: ${categoryId}/${name}`);
+      continue;
+    }
+
+    const fullPath = path.join(categoryDir, name);
+    const stat = await fs.stat(fullPath);
+    files.push({ name, mtimeMs: stat.mtimeMs });
+    counts.supported++;
+  }
+
+  files.sort(compareNewestFirst);
+
+  for (const { name: filename } of files) {
     const relativePath = toPosixPath(
       path.join("assets", "images", "gallery", categoryId, filename)
     );
@@ -91,3 +140,18 @@ const output = {
 
 const json = `${JSON.stringify(output, null, 2)}\n`;
 await fs.writeFile(GALLERY_JSON, json, "utf8");
+
+const summary = [
+  `Gallery sync complete.`,
+  `Included: ${counts.supported}`,
+  `Ignored: ${counts.ignored}`,
+  `Ignored (cover): ${counts.ignoredCover}`,
+  `Ignored (placeholder): ${counts.ignoredPlaceholder}`,
+  `Ignored (.gitkeep): ${counts.ignoredGitkeep}`,
+  `Ignored (heic): ${counts.ignoredHeic}`,
+  `Ignored (unsupported): ${counts.ignoredUnsupported}`,
+];
+console.log(summary.join(" "));
+for (const warning of warnings) {
+  console.warn(warning);
+}

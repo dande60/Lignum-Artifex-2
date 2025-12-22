@@ -30,12 +30,14 @@ Static website for Lignum Artifex, a bespoke CNC woodworking shop. Built as a si
 - Add images to `assets/images/gallery/<category>/`, then run the gallery generator to rebuild `assets/data/gallery.json`
 - Replace background images by overwriting `assets/images/about-bg.jpg` or `assets/images/services-bg.jpg`
 
-## Portfolio Photo Workflow (VS Code only)
-Step 1: Drop photos into `assets/images/gallery/<category>/`.
-Step 2: Run `npm run gallery:sync` (or run `scripts/sync-portfolio.ps1` directly).
-Step 3: Verify locally and on GitHub Pages after the push completes.
+## VS Code Portfolio Workflow
+Step 1: Drag photos into `assets/images/gallery/<category>/`.
+Step 2: VS Code -> Run Task -> `Sync Portfolio (Commit + Push)`.
+Step 3: Done.
 
-One-click option: VS Code Source Control -> Sync Changes (it commits and pushes).
+Notes:
+- `assets/data/gallery.json` is auto-generated. Never edit it manually.
+- The optimizer overwrites images in place (Git keeps history).
 
 ## Deploy (GitHub Pages)
 - Push to the `main` branch.

@@ -1,0 +1,21 @@
+﻿{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Sync Portfolio (Commit + Push)",
+      "type": "shell",
+      "command": "npm run gallery:sync",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "clear": false,
+        "showReuseMessage": true
+      },
+      "problemMatcher": []
+    }
+  ]
+}

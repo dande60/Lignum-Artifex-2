@@ -3,8 +3,13 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "images:optimize": "node scripts/optimize-images.mjs",
     "gallery:build": "node scripts/build-gallery.mjs",
-    "gallery:sync": "powershell -ExecutionPolicy Bypass -File scripts/sync-portfolio.ps1",
+    "gallery:sync": "node scripts/sync-portfolio.mjs",
+    "gallery:sync:ps1": "powershell -ExecutionPolicy Bypass -File scripts/sync-portfolio.ps1",
     "gallery:sync:sh": "bash scripts/sync-portfolio.sh"
+  },
+  "dependencies": {
+    "sharp": "^0.33.2"
   }
 }
