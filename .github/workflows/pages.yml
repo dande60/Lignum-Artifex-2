@@ -1,10 +1,9 @@
-
-# trigger workflow update
 name: Deploy GitHub Pages
 
 on:
   push:
-    branches: ["main"]
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
@@ -40,10 +39,11 @@ jobs:
           ls -la assets/images/gallery/* || true
 
       - name: Install deps if needed
+        shell: bash
         run: |
-          if [ -f package-lock.json ]; then npm ci;
-          elif [ -f package.json ]; then npm install;
-          else echo "No package.json, skipping install";
+          if [ -f package-lock.json ]; then npm ci
+          elif [ -f package.json ]; then npm install
+          else echo "No package.json, skipping install"
           fi
 
       - name: Build gallery index
