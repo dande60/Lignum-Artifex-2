@@ -631,3 +631,71 @@ img {
   user-select: none;
   -webkit-user-select: none;
 }
+
+/* =========================================
+   Warm Craft Gallery Polish (Lignum Artifex)
+   ========================================= */
+
+/* Spacing + width */
+main, .container {
+  max-width: 1120px;
+}
+
+.portfolio-grid,
+.category-gallery-grid {
+  margin-top: 18px;
+  margin-bottom: 46px;
+}
+
+/* Tile feel (premium but warm) */
+.category-gallery-tile,
+.category-gallery-grid a {
+  border-radius: 18px;
+  overflow: hidden;
+  background: rgba(176, 158, 128, 0.08); /* subtle warmth from your palette */
+  box-shadow: 0 10px 28px rgba(0,0,0,0.10);
+  transform: translateZ(0);
+  transition: transform 220ms ease, box-shadow 220ms ease;
+}
+
+.category-gallery-tile:hover,
+.category-gallery-grid a:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 44px rgba(0,0,0,0.16);
+}
+
+/* Image motion (subtle, classy) */
+.category-gallery-tile img,
+.category-gallery-grid img {
+  transition: transform 260ms ease, filter 260ms ease;
+  transform: scale(1);
+}
+
+.category-gallery-tile:hover img,
+.category-gallery-grid a:hover img {
+  transform: scale(1.03);
+  filter: brightness(0.93);
+}
+
+/* Refined category label: “embedded plaque” style */
+.category-gallery-tile span {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 14px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(25, 37, 55, 0.72); /* your navy */
+  backdrop-filter: blur(6px);
+  color: #fff;
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+  text-transform: capitalize; /* feels more artisan than ALL CAPS */
+  text-align: center;
+}
+
+/* Optional: make headings feel slightly more crafted */
+h1 {
+  letter-spacing: 0.02em;
+  margin-bottom: 10px;
+}
