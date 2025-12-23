@@ -58,18 +58,33 @@ try {
     throw error;
   }
 }
-const categories = Array.isArray(data.categories) ? data.categories : [];
-const normalizedCategories = categories.map((category) => {
-  if (!category || typeof category !== "object") return category;
-  if (!category.cover) return category;
-  return { ...category, cover: normalizePath(category.cover) };
-});
+const existingCategories = Array.isArray(data.categories) ? data.categories : [];
+const existingById = new Map(
+  existingCategories
+    .filter((category) => category && typeof category === "object")
+    .map((category) => [category.id, category])
+);
+const categories = [];
 const photos = [];
 
-for (const category of normalizedCategories) {
-  const categoryId = category?.id;
-  if (!categoryId) continue;
+let categoryEntries = [];
+try {
+  categoryEntries = await fs.readdir(GALLERY_DIR, { withFileTypes: true });
+} catch (error) {
+  if (error?.code !== "ENOENT") {
+    throw error;
+  }
+}
+
+const categoryIds = categoryEntries
+  .filter((entry) => entry.isDirectory())
+  .map((entry) => entry.name)
+  .sort((a, b) => collator.compare(a, b));
+
+for (const categoryId of categoryIds) {
   const categoryDir = path.join(GALLERY_DIR, categoryId);
+  const existing = existingById.get(categoryId);
+  let cover = "";
 
   let entries;
   try {
@@ -95,12 +110,6 @@ for (const category of normalizedCategories) {
       continue;
     }
 
-    if (isCoverImage(name)) {
-      counts.ignored++;
-      counts.ignoredCover++;
-      continue;
-    }
-
     if (extLower === ".heic") {
       counts.ignored++;
       counts.ignoredHeic++;
@@ -115,18 +124,40 @@ for (const category of normalizedCategories) {
       continue;
     }
 
+    const relativePath = toPosixPath(
+      path.join("assets", "images", "gallery", categoryId, name)
+    );
+
+    if (isCoverImage(name)) {
+      counts.ignored++;
+      counts.ignoredCover++;
+      cover = relativePath;
+      continue;
+    }
+
     const fullPath = path.join(categoryDir, name);
     const stat = await fs.stat(fullPath);
-    files.push({ name, mtimeMs: stat.mtimeMs });
+    files.push({ name, mtimeMs: stat.mtimeMs, relativePath });
     counts.supported++;
   }
 
   files.sort(compareNewestFirst);
 
-  for (const { name: filename } of files) {
-    const relativePath = toPosixPath(
-      path.join("assets", "images", "gallery", categoryId, filename)
-    );
+  if (!cover && files.length > 0) {
+    cover = files[0].relativePath;
+  }
+
+  const categoryTitle = titleCase(
+    categoryId.replace(/[_-]+/g, " ").replace(/\s+/g, " ").trim()
+  );
+  categories.push({
+    ...(existing && typeof existing === "object" ? existing : {}),
+    id: categoryId,
+    title: categoryTitle,
+    cover: normalizePath(cover || existing?.cover || ""),
+  });
+
+  for (const { name: filename, relativePath } of files) {
     const src = relativePath;
     photos.push({
       src,
@@ -139,7 +170,7 @@ for (const category of normalizedCategories) {
 
 const output = {
   ...data,
-  categories: normalizedCategories,
+  categories,
   photos,
 };
 
