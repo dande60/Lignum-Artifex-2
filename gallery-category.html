@@ -34,5 +34,13 @@
   <script src="vendor/lightbox/lightbox.js"></script>
   <script src="assets/js/lightbox-enforce-size.js"></script>
   <script src="js/gallery-category.js"></script>
+  <script>
+  document.addEventListener("contextmenu", function (e) {
+    if (e.target.tagName === "IMG") {
+      e.preventDefault();
+    }
+  });
+</script>
+
 </body>
 </html>
