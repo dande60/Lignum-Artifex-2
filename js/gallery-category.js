@@ -1,52 +1,30 @@
-(() => {
-  const titleEl = document.getElementById("category-title");
-  const grid = document.getElementById("category-photos");
-  if (!grid) return;
-  const normalizePath = (value) =>
-    typeof value === "string" ? value.replace(/^\/+/, "") : value;
 
-  const params = new URLSearchParams(window.location.search);
-  const categoryId = params.get("cat");
-  if (!categoryId) return;
+const params = new URLSearchParams(window.location.search);
+const categoryId = params.get("cat");
 
-  fetch("assets/data/gallery.json")
-    .then((response) => response.json())
-    .then((data) => {
-      const categories = Array.isArray(data.categories) ? data.categories : [];
-      const photos = Array.isArray(data.photos) ? data.photos : [];
+const container = document.getElementById("category-photos");
+const title = document.getElementById("category-title");
 
-      const category = categories.find((item) => item.id === categoryId);
-      if (category && titleEl) {
-        titleEl.textContent = category.title;
-      }
+fetch("assets/data/gallery.json")
+  .then((response) => response.json())
+  .then((data) => {
+    title.textContent = categoryId;
 
-      const filtered = photos.filter((photo) => photo.category === categoryId);
-      grid.innerHTML = "";
+    const photos = data.photos.filter(
+      (p) => p.category === categoryId
+    );
 
-      filtered.forEach((photo) => {
-        const card = document.createElement("div");
-        card.className = "album-card";
+    photos.forEach((photo) => {
+      const link = document.createElement("a");
+      link.href = photo.src;
+      link.setAttribute("data-lightbox", "portfolio");
 
-        const tile = document.createElement("div");
-        tile.className = "category-gallery-tile";
+      const img = document.createElement("img");
+      img.src = photo.src;
+      img.alt = photo.filename;
 
-        const link = document.createElement("a");
-        link.href = normalizePath(photo.src);
-        link.setAttribute("data-lightbox", "portfolio");
-        link.setAttribute("data-title", photo.title || photo.alt || "");
-
-        const image = document.createElement("img");
-        image.className = "category-gallery-thumb";
-        image.src = normalizePath(photo.src);
-        image.alt = photo.alt || photo.title || "Gallery photo";
-
-        link.appendChild(image);
-        tile.appendChild(link);
-        card.appendChild(tile);
-        grid.appendChild(card);
-      });
-    })
-    .catch(() => {
-      grid.innerHTML = "";
+      link.appendChild(img);
+      container.appendChild(link);
     });
-})();
+  })
+  .catch((err) => console.error("Category load failed:", err));

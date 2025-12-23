@@ -1,36 +1,29 @@
-(() => {
-  const grid = document.getElementById("gallery-categories");
-  if (!grid) return;
-  const normalizePath = (value) =>
-    typeof value === "string" ? value.replace(/^\/+/, "") : value;
+const grid = document.getElementById("gallery-categories");
 
-  fetch("assets/data/gallery.json")
-    .then((response) => response.json())
-    .then((data) => {
-      const categories = Array.isArray(data.categories) ? data.categories : [];
-      grid.innerHTML = "";
+fetch("assets/data/gallery.json")
+  .then((response) => response.json())
+  .then((data) => {
+    data.categories.forEach((category) => {
+      const photos = data.photos.filter(
+        (p) => p.category === category
+      );
 
-      categories.forEach((category) => {
-        const card = document.createElement("div");
-        card.className = "album-card";
+      if (photos.length === 0) return;
 
-        const link = document.createElement("a");
-        link.href = `gallery-category.html?cat=${encodeURIComponent(category.id)}`;
+      const tile = document.createElement("a");
+      tile.href = `gallery-category.html?cat=${encodeURIComponent(category)}`;
+      tile.className = "category-gallery-tile";
 
-        const image = document.createElement("img");
-        image.src = normalizePath(category.cover);
-        image.alt = category.title;
+      const img = document.createElement("img");
+      img.src = photos[0].src; // use first image as cover
+      img.alt = category;
 
-        const title = document.createElement("h3");
-        title.textContent = category.title;
+      const label = document.createElement("span");
+      label.textContent = category;
 
-        link.appendChild(image);
-        card.appendChild(link);
-        card.appendChild(title);
-        grid.appendChild(card);
-      });
-    })
-    .catch(() => {
-      grid.innerHTML = "";
+      tile.appendChild(img);
+      tile.appendChild(label);
+      grid.appendChild(tile);
     });
-})();
+  })
+  .catch((err) => console.error("Gallery load failed:", err));
