@@ -11,7 +11,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "pages"
+  group: pages
   cancel-in-progress: true
 
 jobs:
@@ -26,13 +26,6 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Install deps if needed
-        run: |
-          if [ -f package-lock.json ]; then npm ci;
-          elif [ -f package.json ]; then npm install;
-          else echo "No package.json, skipping install";
-          fi
-
       - name: Debug: list gallery folders on runner
         run: |
           pwd
@@ -43,6 +36,16 @@ jobs:
           ls -la assets/images/gallery || true
           echo "---- assets/images/gallery/* ----"
           ls -la assets/images/gallery/* || true
+
+      - name: Install deps if needed
+        run: |
+          if [ -f package-lock.json ]; then npm ci;
+          elif [ -f package.json ]; then npm install;
+          else echo "No package.json, skipping install";
+          fi
+
+      - name: Build gallery index
+        run: node scripts/build-gallery.mjs
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
