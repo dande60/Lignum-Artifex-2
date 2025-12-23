@@ -1,5 +1,13 @@
 const grid = document.getElementById("gallery-categories");
 
+const CATEGORY_TITLES = {
+  cabinetry: "Cabinetry",
+  coach: "Coach Work",
+  hobby: "Home and Hobby",
+  job: "In the Making",
+  milling: "Custom Milling"
+};
+
 fetch("assets/data/gallery.json")
   .then((response) => response.json())
   .then((data) => {
