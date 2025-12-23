@@ -25,43 +25,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-
-      - name: Debug: list gallery folders on runner
-        run: |
-          pwd
-          ls -la
-          echo "---- assets/images ----"
-          ls -la assets/images || true
-          echo "---- assets/images/gallery ----"
-          ls -la assets/images/gallery || true
-          echo "---- assets/images/gallery/* ----"
-          ls -la assets/images/gallery/* || true
-
-      - name: Install deps if needed
-        run: |
-          if [ -f package-lock.json ]; then
-            npm ci
-          elif [ -f package.json ]; then
-            npm install
-          else
-            echo "No package.json, skipping install"
-          fi
-
-      - name: Build gallery index
-        run: node scripts/build-gallery.mjs
-
-      - name: Configure Pages
+      - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      - name: Upload Pages artifact
+      - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: .
 
-      - name: Deploy
+      - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
