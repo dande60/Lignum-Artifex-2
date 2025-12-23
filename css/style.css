@@ -749,3 +749,54 @@ h1 {
   transform: scale(1.06);
   filter: contrast(1.05) brightness(0.95);
 }
+
+/* =========================================
+   Crafted Hover Effect — Category Images
+   ========================================= */
+
+/* Overlay container */
+#category-photos.category-gallery-grid a::before {
+  content: "";
+  position: absolute;
+  inset: 14px;
+  border: 1px solid rgba(176, 158, 128, 0.0); /* accent */
+  border-radius: 18px;
+  transition: border-color 260ms ease;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Light sweep */
+#category-photos.category-gallery-grid a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    rgba(255,255,255,0.0) 40%,
+    rgba(255,255,255,0.08) 50%,
+    rgba(255,255,255,0.0) 60%
+  );
+  opacity: 0;
+  transform: translateX(-60%);
+  transition:
+    opacity 260ms ease,
+    transform 520ms ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Hover activation */
+#category-photos.category-gallery-grid a:hover::before {
+  border-color: rgba(176, 158, 128, 0.85);
+}
+
+#category-photos.category-gallery-grid a:hover::after {
+  opacity: 1;
+  transform: translateX(60%);
+}
+
+/* Slightly deepen image tone on hover */
+#category-photos.category-gallery-grid a:hover img {
+  filter: brightness(0.9) contrast(1.05);
+}
