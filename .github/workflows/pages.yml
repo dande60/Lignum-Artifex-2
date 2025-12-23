@@ -2,8 +2,7 @@ name: Deploy GitHub Pages
 
 on:
   push:
-    branches:
-      - main
+    branches: ["main"]
   workflow_dispatch:
 
 permissions:
@@ -12,30 +11,27 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
+  group: "pages"
   cancel-in-progress: true
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: "20"
 
       - name: Install deps if needed
-  run: |
-    if [ -f package-lock.json ]; then npm ci;
-    elif [ -f package.json ]; then npm install;
-    else echo "No package.json, skipping install";
-    fi
+        run: |
+          if [ -f package-lock.json ]; then npm ci;
+          elif [ -f package.json ]; then npm install;
+          else echo "No package.json, skipping install";
+          fi
 
       - name: Build gallery index
         run: node scripts/build-gallery.mjs
@@ -48,6 +44,5 @@ jobs:
         with:
           path: .
 
-      - name: Deploy Pages
-        id: deployment
+      - name: Deploy
         uses: actions/deploy-pages@v4
