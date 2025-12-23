@@ -33,8 +33,16 @@ jobs:
           else echo "No package.json, skipping install";
           fi
 
-      - name: Build gallery index
-        run: node scripts/build-gallery.mjs
+      - name: Debug: list gallery folders on runner
+        run: |
+          pwd
+          ls -la
+          echo "---- assets/images ----"
+          ls -la assets/images || true
+          echo "---- assets/images/gallery ----"
+          ls -la assets/images/gallery || true
+          echo "---- assets/images/gallery/* ----"
+          ls -la assets/images/gallery/* || true
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
