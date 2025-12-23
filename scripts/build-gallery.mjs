@@ -49,17 +49,15 @@ const counts = {
   ignoredUnsupported: 0,
 };
 
-let raw;
+let data = {};
 try {
-  raw = await fs.readFile(GALLERY_JSON, "utf8");
+  const raw = await fs.readFile(GALLERY_JSON, "utf8");
+  data = JSON.parse(raw);
 } catch (error) {
-  throw new Error(
-    `Missing gallery data file at ${GALLERY_JSON}. Please create it with categories before running this script.`,
-    { cause: error }
-  );
+  if (error?.code !== "ENOENT") {
+    throw error;
+  }
 }
-
-const data = JSON.parse(raw);
 const categories = Array.isArray(data.categories) ? data.categories : [];
 const normalizedCategories = categories.map((category) => {
   if (!category || typeof category !== "object") return category;
@@ -146,6 +144,7 @@ const output = {
 };
 
 const json = `${JSON.stringify(output, null, 2)}\n`;
+await fs.mkdir(path.dirname(GALLERY_JSON), { recursive: true });
 await fs.writeFile(GALLERY_JSON, json, "utf8");
 
 const summary = [
