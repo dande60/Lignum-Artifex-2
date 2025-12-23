@@ -624,3 +624,10 @@ img {
   object-fit: cover;   /* crops to keep all tiles uniform */
   display: block;
 }
+/* Prevent drag/save & selection on gallery images */
+.category-gallery-grid img,
+.category-gallery-tile img {
+  -webkit-user-drag: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
