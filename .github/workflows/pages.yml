@@ -30,9 +30,12 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Install dependencies
-        if: ${{ hashFiles('package.json', 'package-lock.json') != '' }}
-        run: npm ci
+      - name: Install deps if needed
+  run: |
+    if [ -f package-lock.json ]; then npm ci;
+    elif [ -f package.json ]; then npm install;
+    else echo "No package.json, skipping install";
+    fi
 
       - name: Build gallery index
         run: node scripts/build-gallery.mjs
