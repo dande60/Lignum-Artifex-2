@@ -699,3 +699,35 @@ h1 {
   letter-spacing: 0.02em;
   margin-bottom: 10px;
 }
+
+/* =========================================
+   Warm Craft — Category page overrides
+   ========================================= */
+
+/* Make sure the inside-category grid gets the same premium tile feel */
+#category-photos.category-gallery-grid a {
+  border-radius: 18px;
+  overflow: hidden;
+  background: rgba(176, 158, 128, 0.08);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.10);
+  transform: translateZ(0);
+  transition: transform 220ms ease, box-shadow 220ms ease;
+}
+
+#category-photos.category-gallery-grid a:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 44px rgba(0,0,0,0.16);
+}
+
+#category-photos.category-gallery-grid img {
+  width: 100%;
+  height: 260px;       /* keep your uniform tile height */
+  object-fit: cover;
+  display: block;
+  transition: transform 260ms ease, filter 260ms ease;
+}
+
+#category-photos.category-gallery-grid a:hover img {
+  transform: scale(1.03);
+  filter: brightness(0.93);
+}
