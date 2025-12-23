@@ -27,7 +27,8 @@ fetch("assets/data/gallery.json")
       img.alt = category;
 
       const label = document.createElement("span");
-      label.textContent = category;
+     label.textContent = CATEGORY_TITLES[category] || category;
+
 
       tile.appendChild(img);
       tile.appendChild(label);
