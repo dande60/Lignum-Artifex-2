@@ -731,3 +731,21 @@ h1 {
   transform: scale(1.03);
   filter: brightness(0.93);
 }
+
+#category-photos.category-gallery-grid img {
+  height: 320px; /* more cinematic */
+  object-fit: cover;
+  transform: scale(1);
+  transition:
+    transform 420ms ease,
+    filter 420ms ease;
+}
+
+#category-photos.category-gallery-grid img {
+  height: 260px; /* LOCKED uniform tile size */
+  object-fit: cover;
+  transform: scale(1);
+  transition:
+    transform 420ms ease,
+    filter 420ms ease;
+}
