@@ -751,52 +751,53 @@ h1 {
 }
 
 /* =========================================
-   Crafted Hover Effect — Category Images
+   Crafted Hover Effect — Category Images (Dramatic+)
    ========================================= */
 
-/* Overlay container */
+/* Accent frame */
 #category-photos.category-gallery-grid a::before {
   content: "";
   position: absolute;
-  inset: 14px;
-  border: 1px solid rgba(176, 158, 128, 0.0); /* accent */
+  inset: 12px;
+  border: 2px solid rgba(176, 158, 128, 0.0);
   border-radius: 18px;
-  transition: border-color 260ms ease;
+  transition: border-color 340ms ease;
   pointer-events: none;
   z-index: 2;
 }
 
-/* Light sweep */
+/* Light sweep (stronger, slower) */
 #category-photos.category-gallery-grid a::after {
   content: "";
   position: absolute;
-  inset: 0;
+  inset: -20%;
   background: linear-gradient(
     120deg,
-    rgba(255,255,255,0.0) 40%,
-    rgba(255,255,255,0.08) 50%,
-    rgba(255,255,255,0.0) 60%
+    rgba(255,255,255,0.0) 38%,
+    rgba(255,255,255,0.14) 50%,
+    rgba(255,255,255,0.0) 62%
   );
   opacity: 0;
-  transform: translateX(-60%);
+  transform: translateX(-70%);
   transition:
-    opacity 260ms ease,
-    transform 520ms ease;
+    opacity 340ms ease,
+    transform 700ms ease;
   pointer-events: none;
   z-index: 1;
 }
 
 /* Hover activation */
 #category-photos.category-gallery-grid a:hover::before {
-  border-color: rgba(176, 158, 128, 0.85);
+  border-color: rgba(176, 158, 128, 0.95);
 }
 
 #category-photos.category-gallery-grid a:hover::after {
   opacity: 1;
-  transform: translateX(60%);
+  transform: translateX(70%);
 }
 
-/* Slightly deepen image tone on hover */
+/* Image response: deeper, richer */
 #category-photos.category-gallery-grid a:hover img {
-  filter: brightness(0.9) contrast(1.05);
+  filter: brightness(0.88) contrast(1.12) saturate(1.04);
+  transform: scale(1.07);
 }
