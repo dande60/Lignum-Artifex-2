@@ -560,3 +560,44 @@ img {
     grid-template-columns: 1fr;
   }
 }
+
+/* ================================
+   Portfolio grid & category labels
+   ================================ */
+
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 32px;
+}
+
+/* Category tile */
+.category-gallery-tile {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  background: #000;
+}
+
+/* Tile image */
+.category-gallery-tile img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  display: block;
+}
+
+/* Category heading overlay */
+.category-gallery-tile span {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 12px 14px;
+  background: rgba(0, 0, 0, 0.65);
+  color: #fff;
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: center;
+}
