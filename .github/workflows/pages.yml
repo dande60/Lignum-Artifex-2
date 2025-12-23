@@ -2,8 +2,7 @@ name: Deploy GitHub Pages
 
 on:
   push:
-    branches:
-      - main
+    branches: ["main"]
   workflow_dispatch:
 
 permissions:
@@ -12,12 +11,16 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
+  group: "pages"
   cancel-in-progress: true
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -39,11 +42,13 @@ jobs:
           ls -la assets/images/gallery/* || true
 
       - name: Install deps if needed
-        shell: bash
         run: |
-          if [ -f package-lock.json ]; then npm ci
-          elif [ -f package.json ]; then npm install
-          else echo "No package.json, skipping install"
+          if [ -f package-lock.json ]; then
+            npm ci
+          elif [ -f package.json ]; then
+            npm install
+          else
+            echo "No package.json, skipping install"
           fi
 
       - name: Build gallery index
@@ -58,4 +63,5 @@ jobs:
           path: .
 
       - name: Deploy
+        id: deployment
         uses: actions/deploy-pages@v4
