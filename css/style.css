@@ -177,6 +177,11 @@ img {
   position: relative;
   min-height: 100vh;
   overflow: hidden;
+  background-image: url("../assets/images/about-bg.jpg") !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  background-color: #192537 !important;
 }
 
 .about-page-bg::after {
