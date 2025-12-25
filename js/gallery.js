@@ -23,7 +23,11 @@ fetch("assets/data/gallery.json")
       tile.className = "category-gallery-tile";
 
       const img = document.createElement("img");
-      img.src = photos[0].src; // use first image as cover
+      const cover =
+        photos.find((p) => p.order === 1) ||
+        photos.find((p) => (p.filename || "").toLowerCase() === "cover.jpg") ||
+        photos[0];
+      img.src = cover.src;
       img.alt = category;
 
       const label = document.createElement("span");
