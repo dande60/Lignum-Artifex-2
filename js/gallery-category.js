@@ -87,6 +87,7 @@ if (!container || !titleElement) {
       const photos = (data.photos || []).filter(
         (p) => p.category === categoryId
       );
+      photos.sort((a, b) => (a.order ?? 9999) - (b.order ?? 9999));
 
       if (photos.length === 0) {
         showEmptyState(container);
