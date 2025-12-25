@@ -191,6 +191,10 @@ img {
   padding: 24px;
 }
 
+.about-page-bg .about-panel p {
+  margin-bottom: 0.75rem;
+}
+
 .services-page-bg {
   position: relative;
   min-height: 100vh;
