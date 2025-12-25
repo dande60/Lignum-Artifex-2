@@ -183,7 +183,7 @@ img {
   content: "";
   position: absolute;
   inset: 0;
-  background-image: url("assets/images/about-bg.jpg");
+  background-image: url("../assets/images/about-bg.JPG");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -228,7 +228,7 @@ img {
   content: "";
   position: absolute;
   inset: 0;
-  background-image: url("assets/images/services-bg.jpg");
+  background-image: url("../assets/images/services-bg.JPG");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
