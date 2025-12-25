@@ -92,7 +92,7 @@ img {
   position: absolute;
   inset: 0;
   background: url("../assets/images/hero.png") center/cover no-repeat;
-  filter: blur(10px);
+  filter: blur(10px) brightness(0.5) saturate(0.95);
   transform: scale(1.05);
   z-index: 0;
 }
@@ -118,6 +118,17 @@ img {
   border-radius: 14px;
   box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
   border: 1px solid rgba(176, 158, 128, 0.35);
+}
+
+.hero-content a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+
+.hero-content a:hover,
+.hero-content a:focus {
+  border-bottom-color: var(--accent);
 }
 
 .hero h1 {
