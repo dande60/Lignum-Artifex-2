@@ -257,13 +257,13 @@
       "category": "milling",
       "src": "assets/images/gallery/milling/Corbel Custom Milling.jpg",
       "filename": "Corbel Custom Milling.jpg",
-      "order": 1
+      "order": 2
     },
     {
       "category": "milling",
       "src": "assets/images/gallery/milling/cover.jpg",
       "filename": "cover.jpg",
-      "order": 2
+      "order": 1
     },
     {
       "category": "milling",

@@ -22,6 +22,64 @@ const runCapture = (command, args, options = {}) => {
 
 const getGitDir = () => runCapture("git", ["rev-parse", "--git-dir"]);
 
+const loadOrderLookup = () => {
+  if (!fs.existsSync(GALLERY_JSON)) return new Map();
+  try {
+    const raw = fs.readFileSync(GALLERY_JSON, "utf8");
+    const parsed = JSON.parse(raw);
+    const lookup = new Map();
+    for (const photo of parsed?.photos || []) {
+      if (!photo || typeof photo !== "object") continue;
+      const key = `${photo.category}::${photo.filename}`;
+      const order = photo.order;
+      if (Number.isFinite(order)) {
+        lookup.set(key, order);
+      }
+    }
+    return lookup;
+  } catch (err) {
+    console.warn("Unable to read existing gallery.json order data, continuing.");
+    return new Map();
+  }
+};
+
+const applyPreservedOrders = (orderLookup) => {
+  if (!fs.existsSync(GALLERY_JSON)) return;
+  const raw = fs.readFileSync(GALLERY_JSON, "utf8");
+  const parsed = JSON.parse(raw);
+  const maxByCategory = new Map();
+  const nextByCategory = new Map();
+
+  for (const [key, order] of orderLookup.entries()) {
+    const [category] = key.split("::");
+    const currentMax = maxByCategory.get(category) ?? 0;
+    if (order > currentMax) {
+      maxByCategory.set(category, order);
+    }
+  }
+
+  for (const photo of parsed.photos || []) {
+    if (!photo || typeof photo !== "object") continue;
+    const key = `${photo.category}::${photo.filename}`;
+    const preserved = orderLookup.get(key);
+    if (Number.isFinite(preserved)) {
+      photo.order = preserved;
+      continue;
+    }
+
+    const current = nextByCategory.get(photo.category);
+    if (current == null) {
+      const max = maxByCategory.get(photo.category) ?? 0;
+      nextByCategory.set(photo.category, max + 1);
+    }
+    const next = nextByCategory.get(photo.category);
+    photo.order = next;
+    nextByCategory.set(photo.category, next + 1);
+  }
+
+  fs.writeFileSync(GALLERY_JSON, JSON.stringify(parsed, null, 2) + "\n");
+};
+
 const isRebaseInProgress = () => {
   const gitDir = getGitDir();
   return (
@@ -72,8 +130,11 @@ const pullRebase = () => {
   }
 };
 
+const orderLookup = loadOrderLookup();
+
 pullRebase();
 run("node", ["scripts/build-gallery.mjs"]);
+applyPreservedOrders(orderLookup);
 
 for (const filePath of STAGE_CANDIDATES) {
   if (getStatusLines(filePath).length > 0) {
