@@ -22,6 +22,12 @@ const runCapture = (command, args, options = {}) => {
 
 const getGitDir = () => runCapture("git", ["rev-parse", "--git-dir"]);
 
+const getPhotoKey = (photo) => {
+  if (!photo || typeof photo !== "object") return "";
+  const identifier = photo.filename || photo.src || "";
+  return `${photo.category}::${identifier}`;
+};
+
 const loadOrderLookup = () => {
   if (!fs.existsSync(GALLERY_JSON)) return new Map();
   try {
@@ -29,8 +35,8 @@ const loadOrderLookup = () => {
     const parsed = JSON.parse(raw);
     const lookup = new Map();
     for (const photo of parsed?.photos || []) {
-      if (!photo || typeof photo !== "object") continue;
-      const key = `${photo.category}::${photo.filename}`;
+      const key = getPhotoKey(photo);
+      if (!key) continue;
       const order = photo.order;
       if (Number.isFinite(order)) {
         lookup.set(key, order);
@@ -47,34 +53,15 @@ const applyPreservedOrders = (orderLookup) => {
   if (!fs.existsSync(GALLERY_JSON)) return;
   const raw = fs.readFileSync(GALLERY_JSON, "utf8");
   const parsed = JSON.parse(raw);
-  const maxByCategory = new Map();
-  const nextByCategory = new Map();
-
-  for (const [key, order] of orderLookup.entries()) {
-    const [category] = key.split("::");
-    const currentMax = maxByCategory.get(category) ?? 0;
-    if (order > currentMax) {
-      maxByCategory.set(category, order);
-    }
-  }
 
   for (const photo of parsed.photos || []) {
-    if (!photo || typeof photo !== "object") continue;
-    const key = `${photo.category}::${photo.filename}`;
+    const key = getPhotoKey(photo);
     const preserved = orderLookup.get(key);
     if (Number.isFinite(preserved)) {
       photo.order = preserved;
-      continue;
+    } else if ("order" in photo) {
+      delete photo.order;
     }
-
-    const current = nextByCategory.get(photo.category);
-    if (current == null) {
-      const max = maxByCategory.get(photo.category) ?? 0;
-      nextByCategory.set(photo.category, max + 1);
-    }
-    const next = nextByCategory.get(photo.category);
-    photo.order = next;
-    nextByCategory.set(photo.category, next + 1);
   }
 
   fs.writeFileSync(GALLERY_JSON, JSON.stringify(parsed, null, 2) + "\n");
