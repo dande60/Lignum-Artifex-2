@@ -233,7 +233,6 @@ img {
   content: "";
   position: absolute;
   inset: 0;
-  background-image: url("/Lignum-Artifex-2/assets/images/services-bg.JPG");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -832,6 +831,19 @@ h1 {
 #category-photos.category-gallery-grid a:hover img {
   filter: brightness(0.88) contrast(1.12) saturate(1.04);
   transform: scale(1.07);
+}
+
+.services-page-bg,
+.services-page-bg::before,
+.services-page-bg::after {
+  background-image: none !important;
+  background: none !important;
+  filter: none !important;
+}
+
+.services-page-bg::before,
+.services-page-bg::after {
+  content: none !important;
 }
 
 .about-page-bg,
