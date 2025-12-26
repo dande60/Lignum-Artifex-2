@@ -854,3 +854,9 @@ h1 {
   background-image: none !important;
   filter: none !important;
 }
+
+.about-page-bg,
+.services-page-bg {
+  background-color: #8A867E !important;
+  background-image: none !important;
+}
