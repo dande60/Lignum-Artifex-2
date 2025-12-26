@@ -840,6 +840,22 @@ h1 {
   background-image: none !important;
 }
 
+/* Remove About-only background overlays so it matches Services */
+.about-page-bg {
+  background-color: #8A867E !important;
+  background-image: none !important;
+}
+
+.about-page-bg::before,
+.about-page-bg::after {
+  content: none !important;
+  display: none !important;
+  background: none !important;
+  background-image: none !important;
+  filter: none !important;
+  box-shadow: none !important;
+}
+
 /* Final override: Services page must NOT show any background image */
 .services-page-bg {
   background-color: #8A867E !important;
