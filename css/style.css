@@ -213,7 +213,7 @@ img {
 }
 
 .about-panel {
-  background: rgba(25, 37, 55, 0.55);
+  background: rgba(25, 37, 55, 0.8);
   color: var(--background);
   border-radius: 8px;
   padding: 24px;
@@ -272,7 +272,7 @@ img {
 
 .services-panel.hero-content {
   margin: 0 auto;
-  background: rgba(25, 37, 55, 0.55);
+  background: rgba(25, 37, 55, 0.8);
   border-radius: 8px;
   color: var(--background);
   text-align: left;
