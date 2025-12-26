@@ -839,3 +839,18 @@ h1 {
   background-color: #8A867E !important;
   background-image: none !important;
 }
+
+/* Final override: Services page must NOT show any background image */
+.services-page-bg {
+  background-color: #8A867E !important;
+  background-image: none !important;
+}
+
+.services-page-bg::before,
+.services-page-bg::after {
+  content: none !important;
+  display: none !important;
+  background: none !important;
+  background-image: none !important;
+  filter: none !important;
+}
