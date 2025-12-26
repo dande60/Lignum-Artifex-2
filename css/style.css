@@ -833,3 +833,8 @@ h1 {
   filter: brightness(0.88) contrast(1.12) saturate(1.04);
   transform: scale(1.07);
 }
+
+.about-page-bg,
+.services-page-bg{
+  background: none !important;
+}
