@@ -860,7 +860,7 @@ body.services-page-bg::after {
 
 .about-page-bg,
 .services-page-bg {
-  background: rgba(176, 158, 128, 0.0) !important;
+  background-color: #8A867E !important;
   background-image: none !important;
 }
 
