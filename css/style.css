@@ -858,6 +858,12 @@ body.services-page-bg::after {
   display: none !important;
 }
 
+.about-page-bg,
+.services-page-bg {
+  background: rgba(176, 158, 128, 0.0) !important;
+  background-image: none !important;
+}
+
 /* Disable page backgrounds */
 .about-page-bg,
 .services-page-bg {
