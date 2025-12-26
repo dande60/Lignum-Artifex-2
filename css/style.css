@@ -233,6 +233,7 @@ img {
   content: "";
   position: absolute;
   inset: 0;
+  background-image: url("/Lignum-Artifex-2/assets/images/services-bg.JPG");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -833,20 +834,37 @@ h1 {
   transform: scale(1.07);
 }
 
+/* HARD KILL: About & Services page backgrounds */
+.about-page-bg,
 .services-page-bg,
-.services-page-bg::before,
-.services-page-bg::after {
-  background-image: none !important;
+body.about-page-bg,
+body.services-page-bg {
   background: none !important;
+  background-image: none !important;
+}
+
+.about-page-bg::before,
+.about-page-bg::after,
+.services-page-bg::before,
+.services-page-bg::after,
+body.about-page-bg::before,
+body.about-page-bg::after,
+body.services-page-bg::before,
+body.services-page-bg::after {
+  content: none !important;
+  background: none !important;
+  background-image: none !important;
   filter: none !important;
+  display: none !important;
+}
+
+/* Disable page backgrounds */
+.about-page-bg,
+.services-page-bg {
+  background: none !important;
 }
 
 .services-page-bg::before,
 .services-page-bg::after {
   content: none !important;
-}
-
-.about-page-bg,
-.services-page-bg{
-  background: none !important;
 }
