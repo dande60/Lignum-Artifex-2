@@ -87,15 +87,15 @@
       "src": "assets/images/gallery/cabinetry/IMG_4684.jpg",
       "filename": "IMG_4684.jpg"
     },
+        {
+      "category": "cabinetry",
+      "src": "assets/images/gallery/cabinetry/wine-rack-pegs.jpg",
+      "filename": "wine-rack-pegs.jpg"
+    },
     {
       "category": "cabinetry",
       "src": "assets/images/gallery/cabinetry/IMG_E1743.JPG",
       "filename": "IMG_E1743.JPG"
-    },
-    {
-      "category": "cabinetry",
-      "src": "assets/images/gallery/cabinetry/wine-rack-pegs.jpg",
-      "filename": "wine-rack-pegs.jpg"
     },
     {
       "category": "coach",
