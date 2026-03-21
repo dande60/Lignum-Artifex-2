@@ -35,6 +35,12 @@ Step 1: Drag photos into `assets/images/gallery/<category>/`.
 Step 2: VS Code -> Run Task -> `Sync Portfolio`.
 Step 3: Done.
 
+## Easy ordering workflow
+Step 1: Edit `assets/images/gallery/<category>/order.txt`.
+Step 2: Double-click `update-gallery.bat`.
+Step 3: Enter a commit message when prompted, or press Enter to use the default.
+Step 4: The script rebuilds `assets/data/gallery.json`, commits, and pushes your current branch.
+
 Notes:
 - `assets/data/gallery.json` is auto-generated. Never edit it manually.
 - `order.txt` is optional and is the easiest way to manually control photo order in a category.
