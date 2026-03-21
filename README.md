@@ -28,6 +28,7 @@ Static website for Lignum Artifex, a bespoke CNC woodworking shop. Built as a si
 ## Update content
 - Add images to `assets/images/gallery/<category>/`, then run the gallery generator to rebuild `assets/data/gallery.json`
 - Replace background images by overwriting `assets/images/about-bg.jpg` or `assets/images/services-bg.jpg`
+- Optional: add `assets/images/gallery/<category>/order.txt` to control image order. Put one filename per line. Any images not listed are appended automatically.
 
 ## VS Code Portfolio Workflow
 Step 1: Drag photos into `assets/images/gallery/<category>/`.
@@ -36,6 +37,7 @@ Step 3: Done.
 
 Notes:
 - `assets/data/gallery.json` is auto-generated. Never edit it manually.
+- `order.txt` is optional and is the easiest way to manually control photo order in a category.
 - The optimizer overwrites images in place (Git keeps history).
  - When working outside the VS Code task, run `node scripts/build-gallery.mjs` before committing and pushing.
 

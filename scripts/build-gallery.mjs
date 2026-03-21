@@ -10,6 +10,23 @@ const collator = new Intl.Collator("en", { numeric: true, sensitivity: "base" })
 
 const toPosixPath = (value) => value.split(path.sep).join("/");
 
+async function readOrderFile(categoryDir) {
+  const orderPath = path.join(categoryDir, "order.txt");
+
+  try {
+    const raw = await fs.readFile(orderPath, "utf8");
+    return raw
+      .split(/\r?\n/)
+      .map((line) => line.trim())
+      .filter((line) => line && !line.startsWith("#"));
+  } catch (error) {
+    if (error?.code === "ENOENT") {
+      return [];
+    }
+    throw error;
+  }
+}
+
 let categoryEntries = [];
 try {
   categoryEntries = await fs.readdir(GALLERY_DIR, { withFileTypes: true });
@@ -45,7 +62,25 @@ for (const category of categories) {
     .filter((name) => SUPPORTED_EXTS.has(path.extname(name).toLowerCase()))
     .sort((a, b) => collator.compare(a, b));
 
+  const listedOrder = await readOrderFile(categoryDir);
+  const orderedFiles = [];
+  const seen = new Set();
+
+  for (const filename of listedOrder) {
+    if (files.includes(filename) && !seen.has(filename)) {
+      orderedFiles.push(filename);
+      seen.add(filename);
+    }
+  }
+
   for (const filename of files) {
+    if (!seen.has(filename)) {
+      orderedFiles.push(filename);
+      seen.add(filename);
+    }
+  }
+
+  for (const [index, filename] of orderedFiles.entries()) {
     const relativePath = toPosixPath(
       path.join("assets", "images", "gallery", category, filename)
     );
@@ -53,6 +88,7 @@ for (const category of categories) {
       category,
       src: relativePath,
       filename,
+      order: index + 1,
     });
   }
 }
