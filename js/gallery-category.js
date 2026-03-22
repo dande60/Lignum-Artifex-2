@@ -64,6 +64,7 @@ function showEmptyState(containerElement) {
 
 const container = document.getElementById("category-photos");
 const titleElement = document.getElementById("category-title");
+const descriptionElement = document.getElementById("category-description");
 
 // Safety checks (prevents silent failures)
 if (!container || !titleElement) {
@@ -71,6 +72,10 @@ if (!container || !titleElement) {
 } else if (!categoryId) {
   // No category in the address bar
   titleElement.textContent = "Portfolio";
+  if (descriptionElement) {
+    descriptionElement.textContent =
+      "A focused selection of work from across the studio.";
+  }
   setCategorySearchEngineTags("portfolio");
   showEmptyState(container);
 } else {
@@ -79,6 +84,11 @@ if (!container || !titleElement) {
 
   // Update the visible page heading using readable name
   titleElement.textContent = CATEGORY_TITLES[categoryId] || categoryId;
+  if (descriptionElement) {
+    descriptionElement.textContent =
+      CATEGORY_DESCRIPTIONS[categoryId] ||
+      "A focused selection of work from this category.";
+  }
 
   // Load photos for that category
   fetch("assets/data/gallery.json")

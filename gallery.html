@@ -1,19 +1,20 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Portfolio | Custom Cabinetry & CNC Woodwork – Lignum Artifex</title>
-<meta name="description"
-      content="Explore bespoke cabinetry, custom CNC carving, architectural woodwork, and in-progress craftsmanship by Lignum Artifex." />
-
- 
-  <!-- Open Graph -->
-<meta property="og:title" content="Portfolio | Custom Cabinetry & CNC Woodwork – Lignum Artifex" />
-<meta property="og:description" content="Bespoke cabinetry, CNC-crafted woodwork, and fine craftsmanship projects by Lignum Artifex." />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://dande60.github.io/Lignum-Artifex-2/gallery.html" />
-
+  <title>Portfolio | Custom Cabinetry & CNC Woodwork | Lignum Artifex</title>
+  <meta
+    name="description"
+    content="Explore a curated portfolio of cabinetry, custom milling, coach work, home projects, and in-progress craftsmanship by Lignum Artifex."
+  />
+  <meta property="og:title" content="Portfolio | Custom Cabinetry & CNC Woodwork | Lignum Artifex" />
+  <meta
+    property="og:description"
+    content="A curated selection of bespoke cabinetry, CNC-crafted woodwork, and specialty projects by Lignum Artifex."
+  />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://dande60.github.io/Lignum-Artifex-2/gallery.html" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&display=swap" rel="stylesheet" />
@@ -28,7 +29,7 @@
       </a>
       <nav>
         <a href="index.html">Home</a>
-        <a href="gallery.html">Selected works</a>
+        <a href="gallery.html">Portfolio</a>
         <a href="about.html">About</a>
         <a href="services.html">Services</a>
         <a class="contact-link" href="contact.html">Contact</a>
@@ -37,24 +38,29 @@
   </header>
 
   <main class="page">
-    <h1>Selected Works</h1>
-    <p>A curated selection of commissioned work and in-progress builds.</p>
-    <div class="gallery-grid portfolio-grid" id="gallery-categories">
-    </div>
+    <section class="intro-block">
+      <p class="eyebrow">Portfolio</p>
+      <h1>Selected Works</h1>
+      <p class="lede">
+        A curated look at completed commissions, specialty fabrication, and work in progress across cabinetry, milling, coach work, and custom builds.
+      </p>
+    </section>
+
+    <div class="gallery-grid portfolio-grid" id="gallery-categories"></div>
   </main>
 
   <script src="js/gallery.js"></script>
   <script>
-  document.addEventListener("contextmenu", function (e) {
-    if (e.target.tagName === "IMG") {
-      e.preventDefault();
-    }
-  });
-  document.addEventListener("dragstart", function (e) {
-    if (e.target.tagName === "IMG") {
-      e.preventDefault();
-    }
-  });
-</script>
+    document.addEventListener("contextmenu", function (e) {
+      if (e.target.tagName === "IMG") {
+        e.preventDefault();
+      }
+    });
+    document.addEventListener("dragstart", function (e) {
+      if (e.target.tagName === "IMG") {
+        e.preventDefault();
+      }
+    });
+  </script>
 </body>
 </html>
