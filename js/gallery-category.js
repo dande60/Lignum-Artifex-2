@@ -23,16 +23,20 @@ const CATEGORY_DESCRIPTIONS = {
 };
 
 function setCategorySearchEngineTags(categoryKey) {
+  const isCategoryPage = Boolean(CATEGORY_TITLES[categoryKey]);
   const readableTitle = CATEGORY_TITLES[categoryKey] || "Portfolio";
   const descriptionText =
     CATEGORY_DESCRIPTIONS[categoryKey] ||
     "Explore portfolio work by Lignum Artifex, featuring bespoke woodwork and custom craftsmanship.";
-  const categoryUrl = categoryKey
+  const categoryUrl = isCategoryPage
     ? `https://lignumartifex.com/gallery-category.html?cat=${encodeURIComponent(categoryKey)}`
     : "https://lignumartifex.com/gallery-category.html";
+  const metaTitle = isCategoryPage
+    ? `${readableTitle} | Portfolio | Lignum Artifex`
+    : "Portfolio | Lignum Artifex";
 
   // Browser tab title
-  document.title = `${readableTitle} | Portfolio | Lignum Artifex`;
+  document.title = metaTitle;
 
   // Meta description (create if missing)
   let metaDescription = document.querySelector('meta[name="description"]');
@@ -46,7 +50,7 @@ function setCategorySearchEngineTags(categoryKey) {
   // Open Graph title/description (if present in the page)
   const openGraphTitle = document.querySelector('meta[property="og:title"]');
   if (openGraphTitle) {
-    openGraphTitle.setAttribute("content", `${readableTitle} | Portfolio | Lignum Artifex`);
+    openGraphTitle.setAttribute("content", metaTitle);
   }
 
   const openGraphDescription = document.querySelector(
@@ -71,7 +75,7 @@ function setCategorySearchEngineTags(categoryKey) {
 
   const twitterTitle = document.querySelector('meta[name="twitter:title"]');
   if (twitterTitle) {
-    twitterTitle.setAttribute("content", `${readableTitle} | Portfolio | Lignum Artifex`);
+    twitterTitle.setAttribute("content", metaTitle);
   }
 
   const twitterDescription = document.querySelector(
