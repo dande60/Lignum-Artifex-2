@@ -754,6 +754,17 @@ body {
   background: rgba(176, 158, 128, 0.2);
 }
 
+.text-link {
+  color: var(--primary);
+  border-bottom: 1px solid rgba(176, 158, 128, 0.5);
+}
+
+.text-link:hover,
+.text-link:focus {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
 .intro-block-compact {
   margin-bottom: 28px;
 }
@@ -856,6 +867,23 @@ body {
   max-width: 720px;
 }
 
+.portfolio-cta-panel {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.portfolio-cta-panel h2 {
+  margin: 0 0 10px;
+}
+
+.portfolio-cta-panel p {
+  margin: 0;
+  max-width: 720px;
+}
+
 .contact-layout {
   display: grid;
   grid-template-columns: minmax(0, 1.3fr) minmax(280px, 0.9fr);
@@ -893,6 +921,8 @@ body {
   }
 
   .services-closing {
+  .services-closing,
+  .portfolio-cta-panel {
     flex-direction: column;
     align-items: flex-start;
   }

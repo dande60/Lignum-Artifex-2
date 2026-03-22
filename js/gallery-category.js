@@ -27,9 +27,12 @@ function setCategorySearchEngineTags(categoryKey) {
   const descriptionText =
     CATEGORY_DESCRIPTIONS[categoryKey] ||
     "Explore portfolio work by Lignum Artifex, featuring bespoke woodwork and custom craftsmanship.";
+  const categoryUrl = categoryKey
+    ? `https://dande60.github.io/Lignum-Artifex-2/gallery-category.html?cat=${encodeURIComponent(categoryKey)}`
+    : "https://dande60.github.io/Lignum-Artifex-2/gallery-category.html";
 
   // Browser tab title
-  document.title = `${readableTitle} | Lignum Artifex`;
+  document.title = `${readableTitle} | Portfolio | Lignum Artifex`;
 
   // Meta description (create if missing)
   let metaDescription = document.querySelector('meta[name="description"]');
@@ -43,7 +46,7 @@ function setCategorySearchEngineTags(categoryKey) {
   // Open Graph title/description (if present in the page)
   const openGraphTitle = document.querySelector('meta[property="og:title"]');
   if (openGraphTitle) {
-    openGraphTitle.setAttribute("content", `${readableTitle} | Lignum Artifex`);
+    openGraphTitle.setAttribute("content", `${readableTitle} | Portfolio | Lignum Artifex`);
   }
 
   const openGraphDescription = document.querySelector(
@@ -51,6 +54,11 @@ function setCategorySearchEngineTags(categoryKey) {
   );
   if (openGraphDescription) {
     openGraphDescription.setAttribute("content", descriptionText);
+  }
+
+  const openGraphUrl = document.querySelector('meta[property="og:url"]');
+  if (openGraphUrl) {
+    openGraphUrl.setAttribute("content", categoryUrl);
   }
 }
 
