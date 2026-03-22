@@ -1,26 +1,44 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Portfolio | Custom Cabinetry & CNC Woodwork – Lignum Artifex</title>
-<meta name="description"
-      content="Explore bespoke cabinetry, custom CNC carving, architectural woodwork, and in-progress craftsmanship by Lignum Artifex." />
-
- 
-  <!-- Open Graph -->
-<meta property="og:title" content="Portfolio | Custom Cabinetry & CNC Woodwork – Lignum Artifex" />
-<meta property="og:description" content="Bespoke cabinetry, CNC-crafted woodwork, and fine craftsmanship projects by Lignum Artifex." />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://dande60.github.io/Lignum-Artifex-2/gallery.html" />
-
+  <title>Portfolio | Custom Cabinetry & CNC Woodwork | Lignum Artifex</title>
+  <meta
+    name="description"
+    content="Explore a curated portfolio of cabinetry, custom milling, coach work, home projects, and in-progress craftsmanship by Lignum Artifex."
+  />
+  <link rel="canonical" href="https://lignumartifex.com/gallery.html" />
+  <meta property="og:title" content="Portfolio | Custom Cabinetry & CNC Woodwork | Lignum Artifex" />
+  <meta
+    property="og:description"
+    content="A curated selection of bespoke cabinetry, CNC-crafted woodwork, and specialty projects by Lignum Artifex."
+  />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://lignumartifex.com/gallery.html" />
+  <meta property="og:image" content="https://lignumartifex.com/assets/images/social-share.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Portfolio | Custom Cabinetry & CNC Woodwork | Lignum Artifex" />
+  <meta name="twitter:description" content="A curated selection of bespoke cabinetry, CNC-crafted woodwork, and specialty projects by Lignum Artifex." />
+  <meta name="twitter:image" content="https://lignumartifex.com/assets/images/social-share.jpg" />
+  <link rel="icon" type="image/png" href="assets/images/favicon-32.png" />
+  <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="vendor/lightbox/lightbox.css" />
   <link rel="stylesheet" href="css/style.css" />
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": "Lignum Artifex Portfolio",
+      "url": "https://lignumartifex.com/gallery.html",
+      "description": "A curated selection of bespoke cabinetry, CNC-crafted woodwork, and specialty projects by Lignum Artifex."
+    }
+  </script>
 </head>
-<body>
+<body id="top">
   <header class="navbar">
     <div class="nav-inner">
       <a class="logo" href="index.html">
@@ -28,7 +46,7 @@
       </a>
       <nav>
         <a href="index.html">Home</a>
-        <a href="gallery.html">Selected works</a>
+        <a href="gallery.html">Portfolio</a>
         <a href="about.html">About</a>
         <a href="services.html">Services</a>
         <a class="contact-link" href="contact.html">Contact</a>
@@ -37,24 +55,52 @@
   </header>
 
   <main class="page">
-    <h1>Selected Works</h1>
-    <p>A curated selection of commissioned work and in-progress builds.</p>
-    <div class="gallery-grid portfolio-grid" id="gallery-categories">
-    </div>
+    <section class="intro-block">
+      <p class="eyebrow">Portfolio</p>
+      <h1>Selected Works</h1>
+      <p class="lede">
+        A curated look at completed commissions, specialty fabrication, and work in progress across cabinetry, milling, coach work, and custom builds.
+      </p>
+      <p class="section-supporting-text">Examples of custom work completed for interiors, specialty builds, and one-off fabrication inquiries in Toronto, Waterloo Region, and the Greater Toronto Area.</p>
+    </section>
+
+    <div class="gallery-grid portfolio-grid" id="gallery-categories"></div>
+
+    <section class="content-panel portfolio-cta-panel">
+      <div>
+        <p class="eyebrow">Ready To Start</p>
+        <h2>Have a project in mind?</h2>
+        <p>Whether you already have drawings or only an early concept, we can help shape the right next step.</p>
+      </div>
+      <a class="button-link button-link-primary" href="contact.html">Discuss Your Project</a>
+    </section>
   </main>
+
+  <footer class="site-footer">
+    <div class="site-footer-inner">
+      <div>
+        <p class="site-footer-title">Lignum Artifex</p>
+        <p class="site-footer-text">Bespoke woodworking and CNC craftsmanship serving Greater Toronto Area and Waterloo Region.</p>
+      </div>
+      <div class="site-footer-links">
+        <a href="#top">Back to Top</a>
+      </div>
+    </div>
+    <p class="site-footer-meta">&copy; 2023 Lignum Artifex. Custom work by inquiry.</p>
+  </footer>
 
   <script src="js/gallery.js"></script>
   <script>
-  document.addEventListener("contextmenu", function (e) {
-    if (e.target.tagName === "IMG") {
-      e.preventDefault();
-    }
-  });
-  document.addEventListener("dragstart", function (e) {
-    if (e.target.tagName === "IMG") {
-      e.preventDefault();
-    }
-  });
-</script>
+    document.addEventListener("contextmenu", function (e) {
+      if (e.target.tagName === "IMG") {
+        e.preventDefault();
+      }
+    });
+    document.addEventListener("dragstart", function (e) {
+      if (e.target.tagName === "IMG") {
+        e.preventDefault();
+      }
+    });
+  </script>
 </body>
 </html>
