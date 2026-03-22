@@ -989,6 +989,85 @@ body {
   transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
 }
 
+.services-showcase .service-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.services-showcase .service-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.services-showcase .service-card-cnc {
+  background: #ffffff;
+}
+
+.services-showcase .service-card-cnc::before {
+  background: url("../assets/images/services/CNC.png") center/102% 94% no-repeat;
+  opacity: 0.86;
+  filter: none;
+  mix-blend-mode: normal;
+}
+
+.services-showcase .service-card-architectural {
+  background: #ffffff;
+}
+
+.services-showcase .service-card-architectural::before {
+  background: url("../assets/images/services/Architectual.png") center/120% 120% no-repeat;
+  opacity: 0.58;
+  filter: none;
+  mix-blend-mode: normal;
+}
+
+.services-showcase .service-card-furniture {
+  background: #ffffff;
+}
+
+.services-showcase .service-card-furniture::before {
+  background: url("../assets/images/services/furniture.png") center/120% 120% no-repeat;
+  opacity: 0.74;
+  filter: none;
+  mix-blend-mode: normal;
+}
+
+.services-showcase .service-card-design {
+  background: #ffffff;
+}
+
+.services-showcase .service-card-design::before {
+  background: url("../assets/images/services/design.png") center/120% 120% no-repeat;
+  opacity: 0.74;
+  filter: none;
+  mix-blend-mode: normal;
+}
+
+.services-showcase .service-card-batch {
+  background: #ffffff;
+}
+
+.services-showcase .service-card-batch::before {
+  background: url("../assets/images/services/batch_transparent_clean.png") center/120% 120% no-repeat;
+  opacity: 0.58;
+  filter: none;
+  mix-blend-mode: normal;
+}
+
+.services-showcase .service-card-bespoke {
+  background: #ffffff;
+}
+
+.services-showcase .service-card-bespoke::before {
+  background: url("../assets/images/services/bespoke.png") center/120% 120% no-repeat;
+  opacity: 0.58;
+  filter: none;
+  mix-blend-mode: normal;
+}
+
 .services-showcase .service-card:hover,
 .services-showcase .service-card:focus-within {
   transform: translateY(-3px);
