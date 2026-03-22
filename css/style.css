@@ -860,6 +860,77 @@ body {
   gap: 22px;
 }
 
+.services-overview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: -8px 0 32px;
+}
+
+.services-pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: rgba(25, 37, 55, 0.08);
+  border: 1px solid rgba(176, 158, 128, 0.42);
+  color: var(--primary);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.76rem;
+}
+
+.services-showcase {
+  position: relative;
+  margin-top: 0;
+  padding: 30px;
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at top right, rgba(176, 158, 128, 0.2), transparent 30%),
+    linear-gradient(180deg, rgba(25, 37, 55, 0.96), rgba(25, 37, 55, 0.88));
+  border: 1px solid rgba(176, 158, 128, 0.34);
+  box-shadow: 0 24px 56px rgba(25, 37, 55, 0.16);
+  overflow: hidden;
+}
+
+.services-showcase::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.06), transparent 42%);
+  pointer-events: none;
+}
+
+.services-showcase .services-grid {
+  position: relative;
+  z-index: 1;
+}
+
+.services-showcase .service-card {
+  position: relative;
+  height: 100%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.8));
+  border: 1px solid rgba(176, 158, 128, 0.3);
+  box-shadow: 0 16px 34px rgba(10, 14, 22, 0.14);
+  transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+}
+
+.services-showcase .service-card:hover,
+.services-showcase .service-card:focus-within {
+  transform: translateY(-3px);
+  box-shadow: 0 22px 42px rgba(10, 14, 22, 0.18);
+  border-color: rgba(176, 158, 128, 0.55);
+}
+
+.service-kicker {
+  margin: 0 0 14px;
+  color: var(--accent);
+  font-size: 0.76rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+}
+
 .services-closing {
   margin-top: 28px;
   display: flex;
@@ -920,10 +991,6 @@ body {
   color: rgba(233, 233, 233, 0.84);
   line-height: 1.6;
   font-size: 0.88rem;
-}
-
-.site-footer-text {
-  white-space: nowrap;
 }
 
 .site-footer-links {
@@ -1016,7 +1083,6 @@ body {
     grid-template-columns: 1fr;
   }
 
-  .services-closing {
   .services-closing,
   .portfolio-cta-panel {
     flex-direction: column;
@@ -1025,10 +1091,6 @@ body {
 
   .site-footer-inner {
     flex-direction: column;
-  }
-
-  .site-footer-text {
-    white-space: normal;
   }
 }
 
@@ -1051,6 +1113,10 @@ body {
   .service-card,
   .contact-panel {
     padding: 22px;
+  }
+
+  .services-showcase {
+    padding: 20px;
   }
 
   .page {
