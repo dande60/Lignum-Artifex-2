@@ -28,8 +28,8 @@ function setCategorySearchEngineTags(categoryKey) {
     CATEGORY_DESCRIPTIONS[categoryKey] ||
     "Explore portfolio work by Lignum Artifex, featuring bespoke woodwork and custom craftsmanship.";
   const categoryUrl = categoryKey
-    ? `https://dande60.github.io/Lignum-Artifex-2/gallery-category.html?cat=${encodeURIComponent(categoryKey)}`
-    : "https://dande60.github.io/Lignum-Artifex-2/gallery-category.html";
+    ? `https://lignumartifex.com/gallery-category.html?cat=${encodeURIComponent(categoryKey)}`
+    : "https://lignumartifex.com/gallery-category.html";
 
   // Browser tab title
   document.title = `${readableTitle} | Portfolio | Lignum Artifex`;
@@ -65,7 +65,7 @@ function setCategorySearchEngineTags(categoryKey) {
   if (openGraphImage) {
     openGraphImage.setAttribute(
       "content",
-      "https://dande60.github.io/Lignum-Artifex-2/assets/images/social-share.jpg"
+      "https://lignumartifex.com/assets/images/social-share.jpg"
     );
   }
 
@@ -85,8 +85,13 @@ function setCategorySearchEngineTags(categoryKey) {
   if (twitterImage) {
     twitterImage.setAttribute(
       "content",
-      "https://dande60.github.io/Lignum-Artifex-2/assets/images/social-share.jpg"
+      "https://lignumartifex.com/assets/images/social-share.jpg"
     );
+  }
+
+  const canonicalLink = document.querySelector('link[rel="canonical"]');
+  if (canonicalLink) {
+    canonicalLink.setAttribute("href", categoryUrl);
   }
 }
 
