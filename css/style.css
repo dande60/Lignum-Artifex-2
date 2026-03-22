@@ -700,6 +700,12 @@ body {
   padding-top: 24px;
 }
 
+.section-supporting-text {
+  margin: 8px 0 0;
+  max-width: 780px;
+  color: rgba(25, 37, 55, 0.88);
+}
+
 .home-intro-section {
   display: grid;
   gap: 28px;
@@ -884,6 +890,69 @@ body {
   max-width: 720px;
 }
 
+.site-footer {
+  margin-top: 48px;
+  padding: 28px 32px 34px;
+  background: var(--primary);
+  color: var(--background);
+}
+
+.site-footer-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.site-footer-title {
+  margin: 0 0 8px;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.72rem;
+}
+
+.site-footer-text,
+.site-footer-meta {
+  margin: 0;
+  color: rgba(233, 233, 233, 0.84);
+  line-height: 1.6;
+  font-size: 0.88rem;
+}
+
+.site-footer-text {
+  white-space: nowrap;
+}
+
+.site-footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.site-footer-links a {
+  color: var(--background);
+  border-bottom: 1px solid transparent;
+  font-size: 0.92rem;
+}
+
+.site-footer-links a:hover,
+.site-footer-links a:focus {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+.site-footer-meta {
+  max-width: 1180px;
+  margin: 18px auto 0;
+  padding-top: 18px;
+  border-top: 1px solid rgba(176, 158, 128, 0.28);
+  font-size: 0.76rem;
+  text-align: center;
+}
+
 .contact-layout {
   display: grid;
   grid-template-columns: minmax(0, 1.3fr) minmax(280px, 0.9fr);
@@ -892,6 +961,33 @@ body {
 
 .contact-info strong {
   color: var(--primary);
+}
+
+.qr-panel {
+  margin-top: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.qr-copy h2 {
+  margin: 0 0 10px;
+}
+
+.qr-copy p {
+  margin: 0;
+  max-width: 560px;
+}
+
+.contact-qr {
+  width: 180px;
+  height: 180px;
+  flex: 0 0 auto;
+  padding: 10px;
+  background: #fff;
+  border-radius: 18px;
+  border: 1px solid rgba(176, 158, 128, 0.4);
 }
 
 .portfolio-grid {
@@ -926,6 +1022,14 @@ body {
     flex-direction: column;
     align-items: flex-start;
   }
+
+  .site-footer-inner {
+    flex-direction: column;
+  }
+
+  .site-footer-text {
+    white-space: normal;
+  }
 }
 
 @media (max-width: 720px) {
@@ -959,6 +1063,11 @@ body {
 
   .button-link {
     width: 100%;
+  }
+
+  .qr-panel {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   #category-photos.category-gallery-grid {
