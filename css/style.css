@@ -1008,7 +1008,7 @@ body {
 
 .services-showcase .service-card-cnc::before {
   background: url("../assets/images/services/CNC.png") center/102% 94% no-repeat;
-  opacity: 0.86;
+  opacity: 1;
   filter: none;
   mix-blend-mode: normal;
 }
@@ -1029,8 +1029,8 @@ body {
 }
 
 .services-showcase .service-card-furniture::before {
-  background: url("../assets/images/services/furniture.png") center/120% 120% no-repeat;
-  opacity: 0.74;
+  background: url("../assets/images/services/furniture_final.png") center/120% 120% no-repeat;
+  opacity: 0.6;
   filter: none;
   mix-blend-mode: normal;
 }
@@ -1040,7 +1040,7 @@ body {
 }
 
 .services-showcase .service-card-design::before {
-  background: url("../assets/images/services/design.png") center/120% 120% no-repeat;
+  background: url("../assets/images/services/bespoke_tools_transparent.png") center/120% 120% no-repeat;
   opacity: 0.74;
   filter: none;
   mix-blend-mode: normal;
@@ -1062,8 +1062,8 @@ body {
 }
 
 .services-showcase .service-card-bespoke::before {
-  background: url("../assets/images/services/bespoke.png") center/120% 120% no-repeat;
-  opacity: 0.58;
+  background: url("../assets/images/services/bespoke_final.png") center/120% 120% no-repeat;
+  opacity: 1;
   filter: none;
   mix-blend-mode: normal;
 }
