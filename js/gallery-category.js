@@ -11,15 +11,15 @@ const CATEGORY_TITLES = {
 
 const CATEGORY_DESCRIPTIONS = {
   cabinetry:
-    "Explore bespoke cabinetry projects by Lignum Artifex, crafted with precision, clean detail, and refined finishes.",
+    "A curated selection of bespoke cabinetry, built-ins, and interior pieces shaped by clean lines and refined finishes.",
   coach:
-    "Coach and recreational vehicle woodwork projects including custom built-ins, upgrades, and crafted solutions for life on the road.",
+    "Custom coach and recreational vehicle woodwork, from built-ins and upgrades to practical details designed for life on the road.",
   hobby:
-    "Personal and home projects including custom pieces, shop builds, and one-off ideas brought to life in wood.",
+    "Home and personal projects that show material exploration, one-off ideas, and crafted pieces built with the same studio care.",
   job:
-    "Behind-the-scenes progress showing work in motion, from layout and milling to assembly and finishing.",
+    "Work in motion, from layout and milling through assembly and finishing, offering a closer look at process and progress.",
   milling:
-    "Custom milling and material preparation with flat, true stock and clean profiles ready for joinery and build."
+    "Custom milling and material preparation with true stock, clean profiles, and surfaces ready for joinery and final build."
 };
 
 function setCategorySearchEngineTags(categoryKey) {
@@ -110,7 +110,7 @@ if (!container || !titleElement) {
   titleElement.textContent = "Portfolio";
   if (descriptionElement) {
     descriptionElement.textContent =
-      "A focused selection of work from across the studio.";
+      "A curated selection of work from across the studio.";
   }
   setCategorySearchEngineTags("portfolio");
   showEmptyState(container);
@@ -123,7 +123,7 @@ if (!container || !titleElement) {
   if (descriptionElement) {
     descriptionElement.textContent =
       CATEGORY_DESCRIPTIONS[categoryId] ||
-      "A focused selection of work from this category.";
+      "A curated selection of work from this category.";
   }
 
   // Load photos for that category
