@@ -11,25 +11,32 @@ const CATEGORY_TITLES = {
 
 const CATEGORY_DESCRIPTIONS = {
   cabinetry:
-    "Explore bespoke cabinetry projects by Lignum Artifex, crafted with precision, clean detail, and refined finishes.",
+    "A curated selection of bespoke cabinetry, built-ins, and interior pieces shaped by clean lines and refined finishes.",
   coach:
-    "Coach and recreational vehicle woodwork projects including custom built-ins, upgrades, and crafted solutions for life on the road.",
+    "Custom coach and recreational vehicle woodwork, from built-ins and upgrades to practical details designed for life on the road.",
   hobby:
-    "Personal and home projects including custom pieces, shop builds, and one-off ideas brought to life in wood.",
+    "Home and personal projects that show material exploration, one-off ideas, and crafted pieces built with the same studio care.",
   job:
-    "Behind-the-scenes progress showing work in motion, from layout and milling to assembly and finishing.",
+    "Work in motion, from layout and milling through assembly and finishing, offering a closer look at process and progress.",
   milling:
-    "Custom milling and material preparation with flat, true stock and clean profiles ready for joinery and build."
+    "Custom milling and material preparation with true stock, clean profiles, and surfaces ready for joinery and final build."
 };
 
 function setCategorySearchEngineTags(categoryKey) {
+  const isCategoryPage = Boolean(CATEGORY_TITLES[categoryKey]);
   const readableTitle = CATEGORY_TITLES[categoryKey] || "Portfolio";
   const descriptionText =
     CATEGORY_DESCRIPTIONS[categoryKey] ||
     "Explore portfolio work by Lignum Artifex, featuring bespoke woodwork and custom craftsmanship.";
+  const categoryUrl = isCategoryPage
+    ? `https://lignumartifex.com/gallery-category.html?cat=${encodeURIComponent(categoryKey)}`
+    : "https://lignumartifex.com/gallery-category.html";
+  const metaTitle = isCategoryPage
+    ? `${readableTitle} | Portfolio | Lignum Artifex`
+    : "Portfolio | Lignum Artifex";
 
   // Browser tab title
-  document.title = `${readableTitle} | Lignum Artifex`;
+  document.title = metaTitle;
 
   // Meta description (create if missing)
   let metaDescription = document.querySelector('meta[name="description"]');
@@ -43,7 +50,7 @@ function setCategorySearchEngineTags(categoryKey) {
   // Open Graph title/description (if present in the page)
   const openGraphTitle = document.querySelector('meta[property="og:title"]');
   if (openGraphTitle) {
-    openGraphTitle.setAttribute("content", `${readableTitle} | Lignum Artifex`);
+    openGraphTitle.setAttribute("content", metaTitle);
   }
 
   const openGraphDescription = document.querySelector(
@@ -51,6 +58,44 @@ function setCategorySearchEngineTags(categoryKey) {
   );
   if (openGraphDescription) {
     openGraphDescription.setAttribute("content", descriptionText);
+  }
+
+  const openGraphUrl = document.querySelector('meta[property="og:url"]');
+  if (openGraphUrl) {
+    openGraphUrl.setAttribute("content", categoryUrl);
+  }
+
+  const openGraphImage = document.querySelector('meta[property="og:image"]');
+  if (openGraphImage) {
+    openGraphImage.setAttribute(
+      "content",
+      "https://lignumartifex.com/assets/images/social-share.jpg"
+    );
+  }
+
+  const twitterTitle = document.querySelector('meta[name="twitter:title"]');
+  if (twitterTitle) {
+    twitterTitle.setAttribute("content", metaTitle);
+  }
+
+  const twitterDescription = document.querySelector(
+    'meta[name="twitter:description"]'
+  );
+  if (twitterDescription) {
+    twitterDescription.setAttribute("content", descriptionText);
+  }
+
+  const twitterImage = document.querySelector('meta[name="twitter:image"]');
+  if (twitterImage) {
+    twitterImage.setAttribute(
+      "content",
+      "https://lignumartifex.com/assets/images/social-share.jpg"
+    );
+  }
+
+  const canonicalLink = document.querySelector('link[rel="canonical"]');
+  if (canonicalLink) {
+    canonicalLink.setAttribute("href", categoryUrl);
   }
 }
 
@@ -64,6 +109,7 @@ function showEmptyState(containerElement) {
 
 const container = document.getElementById("category-photos");
 const titleElement = document.getElementById("category-title");
+const descriptionElement = document.getElementById("category-description");
 
 // Safety checks (prevents silent failures)
 if (!container || !titleElement) {
@@ -71,6 +117,10 @@ if (!container || !titleElement) {
 } else if (!categoryId) {
   // No category in the address bar
   titleElement.textContent = "Portfolio";
+  if (descriptionElement) {
+    descriptionElement.textContent =
+      "A curated selection of work from across the studio.";
+  }
   setCategorySearchEngineTags("portfolio");
   showEmptyState(container);
 } else {
@@ -79,6 +129,11 @@ if (!container || !titleElement) {
 
   // Update the visible page heading using readable name
   titleElement.textContent = CATEGORY_TITLES[categoryId] || categoryId;
+  if (descriptionElement) {
+    descriptionElement.textContent =
+      CATEGORY_DESCRIPTIONS[categoryId] ||
+      "A curated selection of work from this category.";
+  }
 
   // Load photos for that category
   fetch("assets/data/gallery.json")
@@ -104,6 +159,8 @@ if (!container || !titleElement) {
         const img = document.createElement("img");
         img.src = photo.src;
         img.alt = photo.filename || "Portfolio photo";
+        img.loading = "lazy";
+        img.decoding = "async";
 
         link.appendChild(img);
         container.appendChild(link);

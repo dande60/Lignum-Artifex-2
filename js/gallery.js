@@ -28,10 +28,12 @@ fetch("assets/data/gallery.json")
         photos.find((p) => (p.filename || "").toLowerCase() === "cover.jpg") ||
         photos[0];
       img.src = cover.src;
-      img.alt = category;
+      img.alt = `${CATEGORY_TITLES[category] || category} portfolio cover`;
+      img.loading = "lazy";
+      img.decoding = "async";
 
       const label = document.createElement("span");
-     label.textContent = CATEGORY_TITLES[category] || category;
+      label.textContent = CATEGORY_TITLES[category] || category;
 
 
       tile.appendChild(img);
