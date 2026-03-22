@@ -29,6 +29,8 @@ fetch("assets/data/gallery.json")
         photos[0];
       img.src = cover.src;
       img.alt = `${CATEGORY_TITLES[category] || category} portfolio cover`;
+      img.loading = "lazy";
+      img.decoding = "async";
 
       const label = document.createElement("span");
       label.textContent = CATEGORY_TITLES[category] || category;

@@ -60,6 +60,34 @@ function setCategorySearchEngineTags(categoryKey) {
   if (openGraphUrl) {
     openGraphUrl.setAttribute("content", categoryUrl);
   }
+
+  const openGraphImage = document.querySelector('meta[property="og:image"]');
+  if (openGraphImage) {
+    openGraphImage.setAttribute(
+      "content",
+      "https://dande60.github.io/Lignum-Artifex-2/assets/images/social-share.jpg"
+    );
+  }
+
+  const twitterTitle = document.querySelector('meta[name="twitter:title"]');
+  if (twitterTitle) {
+    twitterTitle.setAttribute("content", `${readableTitle} | Portfolio | Lignum Artifex`);
+  }
+
+  const twitterDescription = document.querySelector(
+    'meta[name="twitter:description"]'
+  );
+  if (twitterDescription) {
+    twitterDescription.setAttribute("content", descriptionText);
+  }
+
+  const twitterImage = document.querySelector('meta[name="twitter:image"]');
+  if (twitterImage) {
+    twitterImage.setAttribute(
+      "content",
+      "https://dande60.github.io/Lignum-Artifex-2/assets/images/social-share.jpg"
+    );
+  }
 }
 
 function showEmptyState(containerElement) {
@@ -122,6 +150,8 @@ if (!container || !titleElement) {
         const img = document.createElement("img");
         img.src = photo.src;
         img.alt = photo.filename || "Portfolio photo";
+        img.loading = "lazy";
+        img.decoding = "async";
 
         link.appendChild(img);
         container.appendChild(link);
