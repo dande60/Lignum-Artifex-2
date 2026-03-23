@@ -4,6 +4,7 @@ const categoryId = params.get("cat");
 const CATEGORY_TITLES = {
   cabinetry: "Cabinetry",
   coach: "Coach Work",
+  "cottage-life": "Cottage Life",
   hobby: "Home and Hobby",
   job: "In the Making",
   milling: "Custom Milling"
@@ -14,6 +15,8 @@ const CATEGORY_DESCRIPTIONS = {
     "A curated selection of bespoke cabinetry, built-ins, and interior pieces shaped by clean lines and refined finishes.",
   coach:
     "Custom coach and recreational vehicle woodwork, from built-ins and upgrades to practical details designed for life on the road.",
+  "cottage-life":
+    "Cottage-focused woodwork and built details shaped for retreat spaces, with practical durability, warm material character, and a relaxed sense of place.",
   hobby:
     "Home and personal projects that show material exploration, one-off ideas, and crafted pieces built with the same studio care.",
   job:
