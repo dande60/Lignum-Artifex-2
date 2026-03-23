@@ -2,6 +2,7 @@
   "categories": [
     "cabinetry",
     "coach",
+    "cottage-life",
     "hobby",
     "job",
     "milling"
@@ -140,6 +141,48 @@
       "order": 4
     },
     {
+      "category": "cottage-life",
+      "src": "assets/images/gallery/cottage-life/Cover.jpg",
+      "filename": "Cover.jpg",
+      "order": 1
+    },
+    {
+      "category": "cottage-life",
+      "src": "assets/images/gallery/cottage-life/Conestogo Lake.jpg",
+      "filename": "Conestogo Lake.jpg",
+      "order": 2
+    },
+    {
+      "category": "cottage-life",
+      "src": "assets/images/gallery/cottage-life/boat table.png",
+      "filename": "boat table.png",
+      "order": 3
+    },
+    {
+      "category": "cottage-life",
+      "src": "assets/images/gallery/cottage-life/No shoes product.png",
+      "filename": "No shoes product.png",
+      "order": 4
+    },
+    {
+      "category": "cottage-life",
+      "src": "assets/images/gallery/cottage-life/Boat Shelf.jpg",
+      "filename": "Boat Shelf.jpg",
+      "order": 5
+    },
+    {
+      "category": "cottage-life",
+      "src": "assets/images/gallery/cottage-life/Small Sruf Board product.png",
+      "filename": "Small Sruf Board product.png",
+      "order": 6
+    },
+    {
+      "category": "cottage-life",
+      "src": "assets/images/gallery/cottage-life/Vertical spice rack.png",
+      "filename": "Vertical spice rack.png",
+      "order": 7
+    },
+    {
       "category": "hobby",
       "src": "assets/images/gallery/hobby/cover.jpg",
       "filename": "cover.jpg",
@@ -183,27 +226,45 @@
     },
     {
       "category": "hobby",
+      "src": "assets/images/gallery/hobby/Firemen.jpg",
+      "filename": "Firemen.jpg",
+      "order": 8
+    },
+    {
+      "category": "hobby",
       "src": "assets/images/gallery/hobby/IMG_2184.JPG",
       "filename": "IMG_2184.JPG",
-      "order": 8
+      "order": 9
     },
     {
       "category": "hobby",
       "src": "assets/images/gallery/hobby/IMG_2186.JPG",
       "filename": "IMG_2186.JPG",
-      "order": 9
+      "order": 10
     },
     {
       "category": "hobby",
       "src": "assets/images/gallery/hobby/IMG_2199.jpg",
       "filename": "IMG_2199.jpg",
-      "order": 10
+      "order": 11
     },
     {
       "category": "hobby",
       "src": "assets/images/gallery/hobby/LKJE8383.JPG",
       "filename": "LKJE8383.JPG",
-      "order": 11
+      "order": 12
+    },
+    {
+      "category": "hobby",
+      "src": "assets/images/gallery/hobby/samurai board.png",
+      "filename": "samurai board.png",
+      "order": 13
+    },
+    {
+      "category": "hobby",
+      "src": "assets/images/gallery/hobby/xmas sled ornament.png",
+      "filename": "xmas sled ornament.png",
+      "order": 14
     },
     {
       "category": "job",

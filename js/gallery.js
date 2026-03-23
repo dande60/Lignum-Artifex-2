@@ -3,15 +3,38 @@ const grid = document.getElementById("gallery-categories");
 const CATEGORY_TITLES = {
   cabinetry: "Cabinetry",
   coach: "Coach Work",
+  "cottage-life": "Cottage Life",
   hobby: "Home and Hobby",
   job: "In the Making",
   milling: "Custom Milling"
 };
 
+const CATEGORY_ORDER = [
+  "cabinetry",
+  "coach",
+  "hobby",
+  "job",
+  "milling",
+  "cottage-life"
+];
+
 fetch("assets/data/gallery.json")
   .then((response) => response.json())
   .then((data) => {
-    data.categories.forEach((category) => {
+    const sortedCategories = [...data.categories].sort((a, b) => {
+      const orderA = CATEGORY_ORDER.indexOf(a);
+      const orderB = CATEGORY_ORDER.indexOf(b);
+      const rankA = orderA === -1 ? Number.MAX_SAFE_INTEGER : orderA;
+      const rankB = orderB === -1 ? Number.MAX_SAFE_INTEGER : orderB;
+
+      if (rankA !== rankB) {
+        return rankA - rankB;
+      }
+
+      return a.localeCompare(b);
+    });
+
+    sortedCategories.forEach((category) => {
       const photos = data.photos.filter(
         (p) => p.category === category
       );
