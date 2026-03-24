@@ -267,12 +267,6 @@
       "order": 14
     },
     {
-      "category": "hobby",
-      "src": "assets/images/gallery/hobby/Brie.jpg",
-      "filename": "Brie.jpg",
-      "order": 15
-    },
-    {
       "category": "job",
       "src": "assets/images/gallery/job/cover.jpg",
       "filename": "cover.jpg",
