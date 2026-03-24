@@ -39,13 +39,14 @@ Step 3: Done.
 Step 1: Edit `assets/images/gallery/<category>/order.txt`.
 Step 2: Double-click `update-gallery.bat`.
 Step 3: Enter a commit message when prompted, or press Enter to use the default.
-Step 4: The script rebuilds `assets/data/gallery.json`, commits, and pushes your current branch.
+Step 4: If you are on `main`, the script creates a temporary `codex/...` branch, commits only the gallery changes, pushes that branch, and prints a PR link. On other branches, it commits and pushes that branch.
 
 Notes:
 - `assets/data/gallery.json` is auto-generated. Never edit it manually.
 - `order.txt` is optional and is the easiest way to manually control photo order in a category.
 - The optimizer overwrites images in place (Git keeps history).
- - When working outside the VS Code task, run `node scripts/build-gallery.mjs` before committing and pushing.
+- The sync script stages only `assets/data/gallery.json` and files under `assets/images/gallery/`.
+- When working outside the VS Code task, run `node scripts/build-gallery.mjs` before committing and pushing.
 
 ## Deploy (GitHub Pages)
 - Push to the `main` branch.
