@@ -262,9 +262,15 @@
     },
     {
       "category": "hobby",
+      "src": "assets/images/gallery/hobby/Brie.jpg",
+      "filename": "Brie.jpg",
+      "order": 14
+    },
+    {
+      "category": "hobby",
       "src": "assets/images/gallery/hobby/xmas sled ornament.png",
       "filename": "xmas sled ornament.png",
-      "order": 14
+      "order": 15
     },
     {
       "category": "job",
