@@ -372,6 +372,92 @@ function Enable-PullRequestAutoMerge {
   }
 }
 
+function Get-PullRequestAutomationState {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$PrUrl
+  )
+
+  $output = & gh pr view $PrUrl --json state,autoMergeRequest,mergeable 2>&1
+  if ($LASTEXITCODE -ne 0) {
+    throw (($output | Out-String).Trim())
+  }
+
+  $text = ($output | Out-String).Trim()
+  if ([string]::IsNullOrWhiteSpace($text)) {
+    throw "GitHub returned an empty response while checking PR state."
+  }
+
+  return ($text | ConvertFrom-Json)
+}
+
+function Resolve-PullRequestAutoMerge {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$PrUrl
+  )
+
+  $mergeFlag = "--$defaultMergeMethod"
+  $attemptErrors = New-Object System.Collections.Generic.List[string]
+
+  for ($attempt = 1; $attempt -le 2; $attempt++) {
+    $output = & gh pr merge --auto $mergeFlag $PrUrl 2>&1
+    if ($LASTEXITCODE -eq 0) {
+      return @{
+        Success = $true
+        AutoMergeState = "Enabled"
+        Summary = "PR created and auto-merge enabled."
+        NextStep = "No further GitHub action required."
+      }
+    }
+
+    $errorText = (($output | Out-String).Trim())
+    if (-not [string]::IsNullOrWhiteSpace($errorText)) {
+      $attemptErrors.Add($errorText)
+    }
+
+    Start-Sleep -Seconds 2
+
+    try {
+      $prState = Get-PullRequestAutomationState -PrUrl $PrUrl
+      if ($prState.state -eq "MERGED") {
+        return @{
+          Success = $true
+          AutoMergeState = "Merged"
+          Summary = "PR merged successfully."
+          NextStep = "No further GitHub action required."
+        }
+      }
+
+      if ($null -ne $prState.autoMergeRequest) {
+        return @{
+          Success = $true
+          AutoMergeState = "Enabled"
+          Summary = "PR created and auto-merge enabled."
+          NextStep = "No further GitHub action required."
+        }
+      }
+    } catch {
+      $stateError = $_.Exception.Message
+      if (-not [string]::IsNullOrWhiteSpace($stateError)) {
+        $attemptErrors.Add("PR status check failed: $stateError")
+      }
+    }
+  }
+
+  $detail = @($attemptErrors | Where-Object { -not [string]::IsNullOrWhiteSpace($_) } | Select-Object -Unique) -join " | "
+  if ([string]::IsNullOrWhiteSpace($detail)) {
+    $detail = "GitHub did not confirm auto-merge."
+  }
+
+  return @{
+    Success = $false
+    AutoMergeState = "Failed to enable"
+    Summary = "PR created, but auto-merge could not be enabled."
+    NextStep = "Open the PR URL to review the blocking rule or merge manually. GitHub said: $detail"
+  }
+}
+
 function Write-ResultFile {
   $lines = @(
     "Timestamp: $($status.Timestamp)",
@@ -545,10 +631,14 @@ try {
 
         try {
           Update-Status -Stage "Auto-Merge"
-          Enable-PullRequestAutoMerge -PrUrl $status.PrUrl
-          Update-Status -FinalStatus "SUCCESS" -Summary "PR created and auto-merge enabled." -NextStep "No further GitHub action required." -AutoMergeState "Enabled"
+          $autoMergeResult = Resolve-PullRequestAutoMerge -PrUrl $status.PrUrl
+          if ($autoMergeResult.Success) {
+            Update-Status -FinalStatus "SUCCESS" -Summary $autoMergeResult.Summary -NextStep $autoMergeResult.NextStep -AutoMergeState $autoMergeResult.AutoMergeState
+          } else {
+            Update-Status -FinalStatus "ACTION NEEDED" -Summary $autoMergeResult.Summary -NextStep $autoMergeResult.NextStep -AutoMergeState $autoMergeResult.AutoMergeState
+          }
         } catch {
-          Update-Status -FinalStatus "ACTION NEEDED" -Summary "PR created, but auto-merge could not be enabled." -NextStep "Open the PR URL to review the blocking rule or merge manually." -AutoMergeState "Failed to enable"
+          Update-Status -FinalStatus "ACTION NEEDED" -Summary "PR created, but auto-merge verification failed." -NextStep "Open the PR URL to review the PR manually. GitHub said: $($_.Exception.Message)" -AutoMergeState "Verification failed"
           throw
         }
       }
