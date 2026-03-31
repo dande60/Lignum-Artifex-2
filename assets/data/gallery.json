@@ -226,44 +226,44 @@
     },
     {
       "category": "hobby",
+      "src": "assets/images/gallery/hobby/Firemen2.jpg",
+      "filename": "Firemen2.jpg",
+      "order": 8
+    },
+    {
+      "category": "hobby",
       "src": "assets/images/gallery/hobby/IMG_2184.JPG",
       "filename": "IMG_2184.JPG",
-      "order": 8
+      "order": 9
     },
     {
       "category": "hobby",
       "src": "assets/images/gallery/hobby/IMG_2186.JPG",
       "filename": "IMG_2186.JPG",
-      "order": 9
+      "order": 10
     },
     {
       "category": "hobby",
       "src": "assets/images/gallery/hobby/IMG_2199.jpg",
       "filename": "IMG_2199.jpg",
-      "order": 10
+      "order": 11
     },
     {
       "category": "hobby",
       "src": "assets/images/gallery/hobby/LKJE8383.JPG",
       "filename": "LKJE8383.JPG",
-      "order": 11
+      "order": 12
     },
     {
       "category": "hobby",
       "src": "assets/images/gallery/hobby/samurai board.png",
       "filename": "samurai board.png",
-      "order": 12
+      "order": 13
     },
     {
       "category": "hobby",
       "src": "assets/images/gallery/hobby/xmas sled ornament.png",
       "filename": "xmas sled ornament.png",
-      "order": 13
-    },
-    {
-      "category": "hobby",
-      "src": "assets/images/gallery/hobby/Firemen2.jpg",
-      "filename": "Firemen2.jpg",
       "order": 14
     },
     {
