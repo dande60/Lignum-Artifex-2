@@ -39,7 +39,10 @@ Step 3: Done.
 Step 1: Edit `assets/images/gallery/<category>/order.txt`.
 Step 2: Double-click `update-gallery.bat`.
 Step 3: Enter a commit message when prompted, or press Enter to use the default.
-Step 4: If you are on `main`, the script creates a temporary `codex/...` branch, commits only the gallery changes, pushes that branch, and prints a PR link. On other branches, it commits and pushes that branch.
+Step 4: The script rebuilds `assets/data/gallery.json`, commits only the gallery changes, and pushes them.
+Step 5: If you start on `main`, the script creates a temporary `codex/gallery-update-...` branch and targets `main` through a pull request instead of pushing directly to `main`.
+Step 6: If `gh` is installed and authenticated, the script creates or reuses a pull request and enables GitHub auto-merge when repo rules allow it.
+Step 7: Review the final status in the batch window or on your Desktop in `gallery-sync-result.txt`.
 
 Notes:
 - `assets/data/gallery.json` is auto-generated. Never edit it manually.
@@ -47,6 +50,9 @@ Notes:
 - The optimizer overwrites images in place (Git keeps history).
 - The sync script stages only `assets/data/gallery.json` and files under `assets/images/gallery/`.
 - When working outside the VS Code task, run `node scripts/build-gallery.mjs` before committing and pushing.
+- Pull request automation requires GitHub CLI (`gh`) to be installed and authenticated.
+- The Desktop status file is overwritten each run as `gallery-sync-result.txt` on your Windows Desktop.
+- If auto-merge cannot be enabled, the script still preserves the pushed branch and prints the compare or PR URL for manual follow-up.
 
 ## Deploy (GitHub Pages)
 - Push to the `main` branch.
