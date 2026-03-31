@@ -184,14 +184,14 @@
     },
     {
       "category": "hobby",
-      "src": "assets/images/gallery/hobby/Firemen2.jpg",
-      "filename": "Firemen2.jpg",
+      "src": "assets/images/gallery/hobby/cover.jpg",
+      "filename": "cover.jpg",
       "order": 1
     },
     {
       "category": "hobby",
-      "src": "assets/images/gallery/hobby/cover.jpg",
-      "filename": "cover.jpg",
+      "src": "assets/images/gallery/hobby/Firemen2.jpg",
+      "filename": "Firemen2.jpg",
       "order": 2
     },
     {
