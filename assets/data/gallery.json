@@ -184,50 +184,50 @@
     },
     {
       "category": "hobby",
+      "src": "assets/images/gallery/hobby/Firemen2.jpg",
+      "filename": "Firemen2.jpg",
+      "order": 1
+    },
+    {
+      "category": "hobby",
       "src": "assets/images/gallery/hobby/cover.jpg",
       "filename": "cover.jpg",
-      "order": 1
+      "order": 2
     },
     {
       "category": "hobby",
       "src": "assets/images/gallery/hobby/IMG_1493.JPG",
       "filename": "IMG_1493.JPG",
-      "order": 2
+      "order": 3
     },
     {
       "category": "hobby",
       "src": "assets/images/gallery/hobby/IMG_1496.JPG",
       "filename": "IMG_1496.JPG",
-      "order": 3
+      "order": 4
     },
     {
       "category": "hobby",
       "src": "assets/images/gallery/hobby/IMG_1503.JPG",
       "filename": "IMG_1503.JPG",
-      "order": 4
+      "order": 5
     },
     {
       "category": "hobby",
       "src": "assets/images/gallery/hobby/IMG_1645.JPG",
       "filename": "IMG_1645.JPG",
-      "order": 5
+      "order": 6
     },
     {
       "category": "hobby",
       "src": "assets/images/gallery/hobby/IMG_0401.JPG",
       "filename": "IMG_0401.JPG",
-      "order": 6
+      "order": 7
     },
     {
       "category": "hobby",
       "src": "assets/images/gallery/hobby/IMG_0561.JPG",
       "filename": "IMG_0561.JPG",
-      "order": 7
-    },
-    {
-      "category": "hobby",
-      "src": "assets/images/gallery/hobby/Firemen.jpg",
-      "filename": "Firemen.jpg",
       "order": 8
     },
     {
