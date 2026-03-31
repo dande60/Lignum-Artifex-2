@@ -391,7 +391,7 @@ function Get-PullRequestAutomationState {
     [string]$PrUrl
   )
 
-  $output = & gh pr view $PrUrl --json state,autoMergeRequest,mergeable 2>&1
+  $output = & gh pr view $PrUrl --json state,autoMergeRequest,mergeable,mergeStateStatus 2>&1
   if ($LASTEXITCODE -ne 0) {
     throw (($output | Out-String).Trim())
   }
@@ -410,70 +410,18 @@ function Resolve-PullRequestAutoMerge {
     [string]$PrUrl
   )
 
-  $mergeFlag = "--$defaultMergeMethod"
   $attemptErrors = New-Object System.Collections.Generic.List[string]
 
-  for ($attempt = 1; $attempt -le 2; $attempt++) {
-    $output = & gh pr merge --auto $mergeFlag $PrUrl 2>&1
-    if ($LASTEXITCODE -eq 0) {
-      return @{
-        Success = $true
-        AutoMergeState = "Enabled"
-        Summary = "PR created and auto-merge enabled."
-        NextStep = "No further GitHub action required."
-      }
-    }
-
-    $errorText = (($output | Out-String).Trim())
-    if (-not [string]::IsNullOrWhiteSpace($errorText)) {
-      $attemptErrors.Add($errorText)
-    }
-
-    $shouldMergeNow = $errorText -match "Pull request is in clean status" -or $errorText -match "enablePullRequestAutoMerge"
-    if ($shouldMergeNow) {
-      try {
-        Merge-PullRequestNow -PrUrl $PrUrl
-        return @{
-          Success = $true
-          AutoMergeState = "Merged"
-          Summary = "PR merged successfully."
-          NextStep = "No further GitHub action required."
-        }
-      } catch {
-        $mergeNowError = $_.Exception.Message
-        if (-not [string]::IsNullOrWhiteSpace($mergeNowError)) {
-          $attemptErrors.Add("Immediate merge failed: $mergeNowError")
-        }
-      }
-    }
-
-    Start-Sleep -Seconds 2
-
+  for ($attempt = 1; $attempt -le 3; $attempt++) {
     try {
       $prState = Get-PullRequestAutomationState -PrUrl $PrUrl
+
       if ($prState.state -eq "MERGED") {
         return @{
           Success = $true
           AutoMergeState = "Merged"
           Summary = "PR merged successfully."
           NextStep = "No further GitHub action required."
-        }
-      }
-
-      if ($prState.mergeable -eq "MERGEABLE") {
-        try {
-          Merge-PullRequestNow -PrUrl $PrUrl
-          return @{
-            Success = $true
-            AutoMergeState = "Merged"
-            Summary = "PR merged successfully."
-            NextStep = "No further GitHub action required."
-          }
-        } catch {
-          $mergeableError = $_.Exception.Message
-          if (-not [string]::IsNullOrWhiteSpace($mergeableError)) {
-            $attemptErrors.Add("Immediate merge failed: $mergeableError")
-          }
         }
       }
 
@@ -485,11 +433,114 @@ function Resolve-PullRequestAutoMerge {
           NextStep = "No further GitHub action required."
         }
       }
-    } catch {
-      $stateError = $_.Exception.Message
-      if (-not [string]::IsNullOrWhiteSpace($stateError)) {
-        $attemptErrors.Add("PR status check failed: $stateError")
+
+      $isReadyToMergeNow = $prState.mergeStateStatus -eq "CLEAN" -or $prState.mergeable -eq "MERGEABLE"
+      if ($isReadyToMergeNow) {
+        Merge-PullRequestNow -PrUrl $PrUrl
+        return @{
+          Success = $true
+          AutoMergeState = "Merged"
+          Summary = "PR merged successfully."
+          NextStep = "No further GitHub action required."
+        }
       }
+
+      Enable-PullRequestAutoMerge -PrUrl $PrUrl
+      return @{
+        Success = $true
+        AutoMergeState = "Enabled"
+        Summary = "PR created and auto-merge enabled."
+        NextStep = "No further GitHub action required."
+      }
+    } catch {
+      $errorText = $_.Exception.Message
+      if (-not [string]::IsNullOrWhiteSpace($errorText)) {
+        $attemptErrors.Add($errorText)
+      }
+
+      if ($attempt -eq 3) {
+        break
+      }
+
+      Start-Sleep -Seconds 2
+      try {
+        $postErrorState = Get-PullRequestAutomationState -PrUrl $PrUrl
+        if ($postErrorState.state -eq "MERGED") {
+          return @{
+            Success = $true
+            AutoMergeState = "Merged"
+            Summary = "PR merged successfully."
+            NextStep = "No further GitHub action required."
+          }
+        }
+
+        if ($null -ne $postErrorState.autoMergeRequest) {
+          return @{
+            Success = $true
+            AutoMergeState = "Enabled"
+            Summary = "PR created and auto-merge enabled."
+            NextStep = "No further GitHub action required."
+          }
+        }
+
+        if ($postErrorState.mergeStateStatus -eq "CLEAN" -or $postErrorState.mergeable -eq "MERGEABLE") {
+          Merge-PullRequestNow -PrUrl $PrUrl
+          return @{
+            Success = $true
+            AutoMergeState = "Merged"
+            Summary = "PR merged successfully."
+            NextStep = "No further GitHub action required."
+          }
+        }
+      } catch {
+        $stateError = $_.Exception.Message
+        if (-not [string]::IsNullOrWhiteSpace($stateError)) {
+          $attemptErrors.Add("PR status check failed: $stateError")
+        }
+      }
+    }
+  }
+
+  try {
+    $finalPrState = Get-PullRequestAutomationState -PrUrl $PrUrl
+    if ($finalPrState.state -eq "MERGED") {
+      return @{
+        Success = $true
+        AutoMergeState = "Merged"
+        Summary = "PR merged successfully."
+        NextStep = "No further GitHub action required."
+      }
+    }
+
+    if ($null -ne $finalPrState.autoMergeRequest) {
+      return @{
+        Success = $true
+        AutoMergeState = "Enabled"
+        Summary = "PR created and auto-merge enabled."
+        NextStep = "No further GitHub action required."
+      }
+    }
+
+    if ($finalPrState.mergeStateStatus -eq "CLEAN" -or $finalPrState.mergeable -eq "MERGEABLE") {
+      try {
+        Merge-PullRequestNow -PrUrl $PrUrl
+        return @{
+          Success = $true
+          AutoMergeState = "Merged"
+          Summary = "PR merged successfully."
+          NextStep = "No further GitHub action required."
+        }
+      } catch {
+        $finalMergeError = $_.Exception.Message
+        if (-not [string]::IsNullOrWhiteSpace($finalMergeError)) {
+          $attemptErrors.Add("Immediate merge failed: $finalMergeError")
+        }
+      }
+    }
+  } catch {
+    $finalStateError = $_.Exception.Message
+    if (-not [string]::IsNullOrWhiteSpace($finalStateError)) {
+      $attemptErrors.Add("Final PR status check failed: $finalStateError")
     }
   }
 
