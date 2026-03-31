@@ -1,60 +1,117 @@
 $ErrorActionPreference = "Stop"
+$PSNativeCommandUseErrorActionPreference = $false
 
 $repoRoot = Split-Path -Parent $PSScriptRoot
 Set-Location $repoRoot
+
 $galleryJson = "assets/data/gallery.json"
 $galleryRoot = "assets/images/gallery"
+$desktopResultPath = Join-Path ([Environment]::GetFolderPath("Desktop")) "gallery-sync-result.txt"
+$defaultCommitMessage = "Update portfolio"
+$defaultMergeMethod = "squash"
 
-function Invoke-GitCapture {
+$status = [ordered]@{
+  Timestamp = (Get-Date).ToString("s")
+  RepoPath = $repoRoot
+  RepoName = Split-Path -Leaf $repoRoot
+  StartedBranch = $null
+  BranchName = $null
+  CommitHash = $null
+  PrUrl = $null
+  CompareUrl = $null
+  AutoMergeState = "Not attempted"
+  FinalStatus = "FAILED"
+  Stage = "Starting"
+  Summary = "Gallery sync did not complete."
+  NextStep = "Review the error output in this window."
+}
+
+function Invoke-CommandCapture {
   param(
+    [Parameter(Mandatory = $true)]
+    [string]$Command,
+
     [Parameter(Mandatory = $true)]
     [string[]]$Args
   )
 
-  $output = & git @Args
+  $output = & $Command @Args 2>&1
   if ($LASTEXITCODE -ne 0) {
-    throw "git $($Args -join ' ') failed."
+    $message = ($output | Out-String).Trim()
+    if ([string]::IsNullOrWhiteSpace($message)) {
+      $message = "$Command $($Args -join ' ') failed."
+    }
+    throw $message
   }
+
   return $output
 }
 
+function Invoke-GitCapture {
+  param(
+    [Parameter(Mandatory = $true, ValueFromRemainingArguments = $true)]
+    [string[]]$Args
+  )
+
+  return Invoke-CommandCapture -Command "git" -Args (@("-c", "core.safecrlf=false") + $Args)
+}
+
+function Test-CommandAvailable {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$Name
+  )
+
+  return [bool](Get-Command $Name -ErrorAction SilentlyContinue)
+}
+
 function Get-CurrentBranch {
-  return (Invoke-GitCapture @("branch", "--show-current")).Trim()
+  return ((Invoke-GitCapture -Args @("branch", "--show-current")) | Out-String).Trim()
+}
+
+function Get-CleanGitLines {
+  param(
+    [Parameter(Mandatory = $false)]
+    [object[]]$Lines
+  )
+
+  if (-not $Lines) {
+    return @()
+  }
+
+  return @(
+    $Lines |
+      ForEach-Object { [string]$_ } |
+      Where-Object { -not [string]::IsNullOrWhiteSpace($_) } |
+      Where-Object { -not $_.StartsWith("warning:") }
+  )
 }
 
 function Get-GalleryStatus {
-  $output = & git status --porcelain --untracked-files=all -- $galleryJson $galleryRoot
-  if ($LASTEXITCODE -ne 0) {
-    throw "Unable to read gallery git status."
-  }
-
-  if (-not $output) {
+  $output = Invoke-GitCapture -Args @("status", "--porcelain", "--untracked-files=all", "--", $galleryJson, $galleryRoot)
+  $cleanOutput = Get-CleanGitLines $output
+  if (-not $cleanOutput) {
     return @()
   }
 
-  return @($output)
+  return $cleanOutput
 }
 
 function Get-StagedPaths {
-  $output = & git diff --cached --name-only
-  if ($LASTEXITCODE -ne 0) {
-    throw "Unable to read staged paths."
-  }
-
-  if (-not $output) {
+  $output = Invoke-GitCapture -Args @("diff", "--cached", "--name-only")
+  $cleanOutput = Get-CleanGitLines $output
+  if (-not $cleanOutput) {
     return @()
   }
 
-  return @($output)
+  return $cleanOutput
 }
 
 function Get-ChangedPaths {
   $paths = New-Object System.Collections.Generic.List[string]
 
-  $unstaged = & git diff --name-only
-  if ($LASTEXITCODE -ne 0) {
-    throw "Unable to read unstaged paths."
-  }
+  $unstaged = Invoke-GitCapture -Args @("diff", "--name-only")
+  $unstaged = Get-CleanGitLines $unstaged
   if ($unstaged) {
     foreach ($path in @($unstaged)) {
       $paths.Add($path)
@@ -65,10 +122,8 @@ function Get-ChangedPaths {
     $paths.Add($path)
   }
 
-  $untracked = & git ls-files --others --exclude-standard
-  if ($LASTEXITCODE -ne 0) {
-    throw "Unable to read untracked paths."
-  }
+  $untracked = Invoke-GitCapture -Args @("ls-files", "--others", "--exclude-standard")
+  $untracked = Get-CleanGitLines $untracked
   if ($untracked) {
     foreach ($path in @($untracked)) {
       $paths.Add($path)
@@ -88,7 +143,7 @@ function Test-IsGalleryPath {
 }
 
 function Get-RemoteInfo {
-  $remoteUrl = (Invoke-GitCapture @("remote", "get-url", "origin")).Trim()
+  $remoteUrl = ((Invoke-GitCapture -Args @("remote", "get-url", "origin")) | Out-String).Trim()
   $webUrl = $remoteUrl
 
   if ($webUrl.EndsWith(".git")) {
@@ -109,100 +164,330 @@ function New-MainSafeBranchName {
   return "codex/gallery-update-" + (Get-Date -Format "yyyyMMdd-HHmmss")
 }
 
-if (Test-Path (Join-Path $repoRoot ".git/MERGE_HEAD")) {
-  Write-Host "Merge in progress. Resolve or abort before syncing."
-  exit 1
-}
+function Update-Status {
+  param(
+    [string]$Stage,
+    [string]$FinalStatus,
+    [string]$Summary,
+    [string]$NextStep,
+    [string]$AutoMergeState
+  )
 
-& node "scripts/build-gallery.mjs"
-if ($LASTEXITCODE -ne 0) {
-  exit $LASTEXITCODE
-}
-
-$galleryStatus = Get-GalleryStatus
-if (-not $galleryStatus) {
-  Write-Host "Nothing to commit."
-  exit 0
-}
-
-$currentBranch = Get-CurrentBranch
-$startedOnMain = $currentBranch -eq "main"
-$createdBranch = $null
-
-$stagedOutsideGallery = @(Get-StagedPaths | Where-Object { -not (Test-IsGalleryPath $_) })
-if ($stagedOutsideGallery.Count -gt 0) {
-  Write-Host "Staged files outside the gallery flow were detected:"
-  $stagedOutsideGallery | ForEach-Object { Write-Host " - $_" }
-  Write-Host "Unstage or commit those files separately, then re-run."
-  exit 1
-}
-
-$changedOutsideGallery = @(Get-ChangedPaths | Where-Object { -not (Test-IsGalleryPath $_) })
-if ($changedOutsideGallery.Count -gt 0) {
-  Write-Host "Changes outside the gallery flow were detected:"
-  $changedOutsideGallery | ForEach-Object { Write-Host " - $_" }
-  Write-Host "Commit, stash, or discard those files separately, then re-run."
-  exit 1
-}
-
-& git add -- $galleryJson $galleryRoot
-& git diff --cached --quiet
-if ($LASTEXITCODE -eq 0) {
-  Write-Host "Nothing to commit."
-  exit 0
-}
-
-if ($startedOnMain) {
-  $createdBranch = New-MainSafeBranchName
-  Write-Host "Protected main detected. Creating branch $createdBranch..."
-  & git switch -c $createdBranch
-  if ($LASTEXITCODE -ne 0) {
-    exit $LASTEXITCODE
+  if ($PSBoundParameters.ContainsKey("Stage")) {
+    $status.Stage = $Stage
   }
-  $currentBranch = $createdBranch
+  if ($PSBoundParameters.ContainsKey("FinalStatus")) {
+    $status.FinalStatus = $FinalStatus
+  }
+  if ($PSBoundParameters.ContainsKey("Summary")) {
+    $status.Summary = $Summary
+  }
+  if ($PSBoundParameters.ContainsKey("NextStep")) {
+    $status.NextStep = $NextStep
+  }
+  if ($PSBoundParameters.ContainsKey("AutoMergeState")) {
+    $status.AutoMergeState = $AutoMergeState
+  }
 }
 
-$message = Read-Host "Commit message (default: Update portfolio)"
-if ([string]::IsNullOrWhiteSpace($message)) {
-  $message = "Update portfolio"
+function Get-CommitHash {
+  try {
+    return ((Invoke-GitCapture -Args @("rev-parse", "--short", "HEAD")) | Out-String).Trim()
+  } catch {
+    return $null
+  }
 }
 
-& git commit -m $message
-if ($LASTEXITCODE -ne 0) {
-  exit $LASTEXITCODE
-}
-
-if ($createdBranch) {
-  Write-Host "Fetching latest main before pushing branch..."
-  & git fetch origin
-  if ($LASTEXITCODE -ne 0) {
-    exit $LASTEXITCODE
+function Test-GhAuthenticated {
+  if (-not (Test-CommandAvailable "gh")) {
+    return $false
   }
 
-  & git rebase origin/main
+  & gh auth status 1>$null 2>$null
+  return $LASTEXITCODE -eq 0
+}
+
+function Get-ExistingPullRequestUrl {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$BranchName
+  )
+
+  $output = & gh pr list --head $BranchName --base main --state open --json url 2>&1
   if ($LASTEXITCODE -ne 0) {
-    Write-Host "Rebase onto origin/main failed. Resolve conflicts, then run: git rebase --continue"
-    exit $LASTEXITCODE
+    throw (($output | Out-String).Trim())
   }
 
-  & git push -u origin $createdBranch
-  if ($LASTEXITCODE -ne 0) {
-    exit $LASTEXITCODE
+  $text = ($output | Out-String).Trim()
+  if ([string]::IsNullOrWhiteSpace($text)) {
+    return $null
   }
 
-  $remoteInfo = Get-RemoteInfo
-  $prUrl = "$($remoteInfo.WebUrl)/compare/main...${createdBranch}?expand=1"
+  $prs = $text | ConvertFrom-Json
+  if ($prs.Count -gt 0) {
+    return $prs[0].url
+  }
+
+  return $null
+}
+
+function New-PullRequest {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$BranchName,
+
+    [Parameter(Mandatory = $true)]
+    [string]$CommitMessage
+  )
+
+  $title = $CommitMessage
+  $body = @(
+    "Automated gallery update from update-gallery.bat.",
+    "",
+    "- Source branch: $BranchName",
+    "- Generated from gallery-only changes"
+  ) -join "`n"
+
+  $output = & gh pr create --base main --head $BranchName --title $title --body $body 2>&1
+  if ($LASTEXITCODE -ne 0) {
+    throw (($output | Out-String).Trim())
+  }
+
+  return (($output | Out-String).Trim())
+}
+
+function Enable-PullRequestAutoMerge {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$PrUrl
+  )
+
+  $mergeFlag = "--$defaultMergeMethod"
+  $output = & gh pr merge --auto $mergeFlag $PrUrl 2>&1
+  if ($LASTEXITCODE -ne 0) {
+    throw (($output | Out-String).Trim())
+  }
+}
+
+function Write-ResultFile {
+  $lines = @(
+    "Timestamp: $($status.Timestamp)",
+    "Repository: $($status.RepoName)",
+    "Repo Path: $($status.RepoPath)",
+    "Started Branch: $($status.StartedBranch)",
+    "Branch: $($status.BranchName)",
+    "Commit: $($status.CommitHash)",
+    "PR URL: $($status.PrUrl)",
+    "Compare URL: $($status.CompareUrl)",
+    "Auto-Merge: $($status.AutoMergeState)",
+    "Final Status: $($status.FinalStatus)",
+    "Stage: $($status.Stage)",
+    "Summary: $($status.Summary)",
+    "Next Step: $($status.NextStep)"
+  )
+
+  Set-Content -Path $desktopResultPath -Value ($lines -join "`r`n") -Encoding ascii
+}
+
+function Write-StatusSummary {
+  $label = switch ($status.FinalStatus) {
+    "SUCCESS" { "[SUCCESS]" }
+    "ACTION NEEDED" { "[ACTION NEEDED]" }
+    default { "[FAILED]" }
+  }
+
   Write-Host ""
-  Write-Host "Branch created: $createdBranch"
-  Write-Host "Open this PR URL:"
-  Write-Host $prUrl
-  exit 0
+  Write-Host "================ Gallery Sync Result ================"
+  Write-Host "$label $($status.Summary)"
+  Write-Host "Stage: $($status.Stage)"
+  Write-Host "Started Branch: $($status.StartedBranch)"
+  Write-Host "Branch: $($status.BranchName)"
+  Write-Host "Commit: $($status.CommitHash)"
+  Write-Host "PR URL: $($status.PrUrl)"
+  Write-Host "Compare URL: $($status.CompareUrl)"
+  Write-Host "Auto-Merge: $($status.AutoMergeState)"
+  Write-Host "Next Step: $($status.NextStep)"
+  Write-Host "Desktop Result: $desktopResultPath"
+  Write-Host "===================================================="
 }
 
-& git rev-parse --abbrev-ref --symbolic-full-name "@{u}" *> $null
-if ($LASTEXITCODE -ne 0) {
-  Write-Host "No upstream configured. Set one with: git push -u origin $currentBranch"
-  exit 1
+$exitCode = 0
+
+try {
+  $status.StartedBranch = Get-CurrentBranch
+  $status.BranchName = $status.StartedBranch
+  $remoteInfo = Get-RemoteInfo
+
+  if (Test-Path (Join-Path $repoRoot ".git/MERGE_HEAD")) {
+    Update-Status -Stage "Preflight" -FinalStatus "FAILED" -Summary "Merge in progress." -NextStep "Resolve or abort the merge, then run update-gallery.bat again."
+    throw "Merge in progress. Resolve or abort before syncing."
+  }
+
+  Update-Status -Stage "Build"
+  & node "scripts/build-gallery.mjs"
+  if ($LASTEXITCODE -ne 0) {
+    Update-Status -FinalStatus "FAILED" -Summary "Gallery build failed." -NextStep "Fix the gallery build error shown above."
+    throw "Gallery build failed."
+  }
+
+  Update-Status -Stage "Preflight"
+  $galleryStatus = Get-GalleryStatus
+  if (-not $galleryStatus) {
+    Update-Status -FinalStatus "SUCCESS" -Summary "Nothing to commit." -NextStep "No further action required." -AutoMergeState "Not needed"
+  } else {
+    $stagedOutsideGallery = @(Get-StagedPaths | Where-Object { -not (Test-IsGalleryPath $_) })
+    if ($stagedOutsideGallery.Count -gt 0) {
+      Update-Status -Stage "Preflight" -FinalStatus "FAILED" -Summary "Staged files outside the gallery flow were detected." -NextStep "Unstage or commit non-gallery files separately, then rerun."
+      throw "Staged files outside the gallery flow were detected: $($stagedOutsideGallery -join ', ')"
+    }
+
+    $changedOutsideGallery = @(Get-ChangedPaths | Where-Object { -not (Test-IsGalleryPath $_) })
+    if ($changedOutsideGallery.Count -gt 0) {
+      Update-Status -Stage "Preflight" -FinalStatus "FAILED" -Summary "Changes outside the gallery flow were detected." -NextStep "Commit, stash, or discard non-gallery files separately, then rerun."
+      throw "Changes outside the gallery flow were detected: $($changedOutsideGallery -join ', ')"
+    }
+
+    Update-Status -Stage "Stage"
+    & git -c core.safecrlf=false add -- $galleryJson $galleryRoot
+    & git -c core.safecrlf=false diff --cached --quiet
+    if ($LASTEXITCODE -eq 0) {
+      Update-Status -FinalStatus "SUCCESS" -Summary "Nothing to commit." -NextStep "No further action required." -AutoMergeState "Not needed"
+    } else {
+      $currentBranch = $status.StartedBranch
+      $startedOnMain = $currentBranch -eq "main"
+      $createdBranch = $null
+
+      if ($startedOnMain) {
+        $createdBranch = New-MainSafeBranchName
+        Write-Host "Protected main detected. Creating branch $createdBranch..."
+        Update-Status -Stage "Branch"
+        & git -c core.safecrlf=false switch -c $createdBranch
+        if ($LASTEXITCODE -ne 0) {
+          Update-Status -FinalStatus "FAILED" -Summary "Could not create the gallery update branch." -NextStep "Fix the git branch error shown above."
+          throw "Unable to create branch $createdBranch."
+        }
+        $currentBranch = $createdBranch
+      }
+
+      $status.BranchName = $currentBranch
+
+      $message = Read-Host "Commit message (default: $defaultCommitMessage)"
+      if ([string]::IsNullOrWhiteSpace($message)) {
+        $message = $defaultCommitMessage
+      }
+
+      Update-Status -Stage "Commit"
+      & git -c core.safecrlf=false commit -m $message
+      if ($LASTEXITCODE -ne 0) {
+        Update-Status -FinalStatus "FAILED" -Summary "Gallery commit failed." -NextStep "Fix the git commit error shown above."
+        throw "Git commit failed."
+      }
+
+      $status.CommitHash = Get-CommitHash
+
+      $shouldAutomatePr = $startedOnMain -or $currentBranch.StartsWith("codex/gallery-update-")
+
+      if ($createdBranch) {
+        Write-Host "Fetching latest main before pushing branch..."
+        Update-Status -Stage "Rebase"
+        & git -c core.safecrlf=false fetch origin
+        if ($LASTEXITCODE -ne 0) {
+          Update-Status -FinalStatus "FAILED" -Summary "Fetching origin failed." -NextStep "Fix the git fetch error shown above."
+          throw "Git fetch failed."
+        }
+
+        & git -c core.safecrlf=false rebase origin/main
+        if ($LASTEXITCODE -ne 0) {
+          Update-Status -FinalStatus "FAILED" -Summary "Rebase onto origin/main failed." -NextStep "Resolve the rebase, then continue or rerun the workflow."
+          throw "Rebase onto origin/main failed."
+        }
+
+        $status.CommitHash = Get-CommitHash
+      } else {
+        & git -c core.safecrlf=false rev-parse --abbrev-ref --symbolic-full-name "@{u}" *> $null
+        if ($LASTEXITCODE -ne 0) {
+          Update-Status -FinalStatus "FAILED" -Summary "No upstream branch is configured." -NextStep "Run git push -u origin $currentBranch once, then rerun the workflow."
+          throw "No upstream configured for $currentBranch."
+        }
+      }
+
+      Update-Status -Stage "Push"
+      if ($createdBranch) {
+        & git -c core.safecrlf=false push -u origin $currentBranch
+      } else {
+        & git -c core.safecrlf=false push
+      }
+      if ($LASTEXITCODE -ne 0) {
+        Update-Status -FinalStatus "FAILED" -Summary "Branch push failed." -NextStep "Fix the git push error shown above."
+        throw "Git push failed."
+      }
+
+      $status.CompareUrl = "$($remoteInfo.WebUrl)/compare/main...$($currentBranch)?expand=1"
+
+      if (-not $shouldAutomatePr) {
+        Update-Status -Stage "Push" -FinalStatus "ACTION NEEDED" -Summary "Gallery branch pushed, but PR automation is only enabled for gallery update branches." -NextStep "Open the compare URL if you want to merge this branch into main." -AutoMergeState "Not attempted"
+      } elseif (-not (Test-CommandAvailable "gh")) {
+        Update-Status -Stage "PR" -FinalStatus "ACTION NEEDED" -Summary "Gallery branch pushed, but GitHub CLI is not installed." -NextStep "Install GitHub CLI, or open the compare URL manually to create the PR." -AutoMergeState "Skipped: gh not installed"
+      } elseif (-not (Test-GhAuthenticated)) {
+        Update-Status -Stage "PR" -FinalStatus "ACTION NEEDED" -Summary "Gallery branch pushed, but GitHub CLI is not authenticated." -NextStep "Run gh auth login, then rerun update-gallery.bat or open the compare URL manually." -AutoMergeState "Skipped: gh not authenticated"
+      } else {
+        Update-Status -Stage "PR"
+        try {
+          $existingPrUrl = Get-ExistingPullRequestUrl -BranchName $currentBranch
+          if ($existingPrUrl) {
+            $status.PrUrl = $existingPrUrl
+          } else {
+            $status.PrUrl = New-PullRequest -BranchName $currentBranch -CommitMessage $message
+          }
+        } catch {
+          Update-Status -FinalStatus "ACTION NEEDED" -Summary "Gallery branch pushed, but pull request creation failed." -NextStep "Open the compare URL manually to create the PR." -AutoMergeState "Skipped: PR creation failed"
+          throw
+        }
+
+        try {
+          Update-Status -Stage "Auto-Merge"
+          Enable-PullRequestAutoMerge -PrUrl $status.PrUrl
+          Update-Status -FinalStatus "SUCCESS" -Summary "PR created and auto-merge enabled." -NextStep "No further GitHub action required." -AutoMergeState "Enabled"
+        } catch {
+          Update-Status -FinalStatus "ACTION NEEDED" -Summary "PR created, but auto-merge could not be enabled." -NextStep "Open the PR URL to review the blocking rule or merge manually." -AutoMergeState "Failed to enable"
+          throw
+        }
+      }
+    }
+  }
+} catch {
+  $errorMessage = $_.Exception.Message
+  if ([string]::IsNullOrWhiteSpace($errorMessage)) {
+    $errorMessage = ($_ | Out-String).Trim()
+  }
+  Write-Host $errorMessage
+
+  if ($status.FinalStatus -eq "FAILED") {
+    if ($status.Summary -eq "Gallery sync did not complete.") {
+      $status.Summary = $errorMessage
+    }
+    $exitCode = 1
+  } elseif ($status.FinalStatus -eq "ACTION NEEDED") {
+    if ($status.Summary -eq "Gallery sync did not complete.") {
+      $status.Summary = $errorMessage
+    }
+    $exitCode = 0
+  } else {
+    $status.FinalStatus = "FAILED"
+    $status.Summary = $errorMessage
+    $status.NextStep = "Review the error output in this window."
+    $exitCode = 1
+  }
+} finally {
+  if (-not $status.BranchName) {
+    $status.BranchName = Get-CurrentBranch
+  }
+  if (-not $status.CommitHash) {
+    $status.CommitHash = Get-CommitHash
+  }
+  $status.Timestamp = (Get-Date).ToString("s")
+  Write-ResultFile
+  Write-StatusSummary
 }
 
-& git push
+exit $exitCode
