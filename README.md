@@ -39,10 +39,11 @@ Step 3: Done.
 Step 1: Edit `assets/images/gallery/<category>/order.txt`.
 Step 2: Double-click `update-gallery.bat`.
 Step 3: Enter a commit message when prompted, or press Enter to use the default.
-Step 4: The script rebuilds `assets/data/gallery.json`, commits only the gallery changes, and pushes them.
-Step 5: If you start on `main`, the script creates a temporary `codex/gallery-update-...` branch and targets `main` through a pull request instead of pushing directly to `main`.
-Step 6: If `gh` is installed and authenticated, the script creates or reuses a pull request and enables GitHub auto-merge when repo rules allow it.
-Step 7: Review the final status in the batch window or on your Desktop in `gallery-sync-result.txt`.
+Step 4: If you start on `main`, the script fetches `origin/main` and fast-forwards local `main` automatically when that can be done safely.
+Step 5: The script rebuilds `assets/data/gallery.json`, commits only the gallery changes, and pushes them.
+Step 6: If you start on `main`, the script creates a temporary `codex/gallery-update-...` branch and targets `main` through a pull request instead of pushing directly to `main`.
+Step 7: If `gh` is installed and authenticated, the script creates or reuses a pull request and enables GitHub auto-merge when repo rules allow it.
+Step 8: Review the final status in the batch window or on your Desktop in `gallery-sync-result.txt`.
 
 Notes:
 - `assets/data/gallery.json` is auto-generated. Never edit it manually.
@@ -53,6 +54,9 @@ Notes:
 - Pull request automation requires GitHub CLI (`gh`) to be installed and authenticated.
 - The Desktop status file is overwritten each run as `gallery-sync-result.txt` on your Windows Desktop.
 - If auto-merge cannot be enabled, the script still preserves the pushed branch and prints the compare or PR URL for manual follow-up.
+- If local `main` is behind `origin/main`, the script fast-forwards it automatically before creating the gallery branch.
+- If local `main` is ahead of or diverged from `origin/main`, the script stops early and tells you to reconcile `main` manually.
+- If a previous run left a rebase in progress, the script stops immediately and tells you to abort or complete that rebase first.
 
 ## Deploy (GitHub Pages)
 - Push to the `main` branch.

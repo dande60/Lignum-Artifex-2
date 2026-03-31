@@ -15,6 +15,7 @@ $status = [ordered]@{
   RepoPath = $repoRoot
   RepoName = Split-Path -Leaf $repoRoot
   StartedBranch = $null
+  MainSync = "Not attempted"
   BranchName = $null
   CommitHash = $null
   PrUrl = $null
@@ -164,6 +165,108 @@ function New-MainSafeBranchName {
   return "codex/gallery-update-" + (Get-Date -Format "yyyyMMdd-HHmmss")
 }
 
+function Test-RebaseInProgress {
+  return (
+    (Test-Path (Join-Path $repoRoot ".git\rebase-merge")) -or
+    (Test-Path (Join-Path $repoRoot ".git\rebase-apply")) -or
+    (Test-Path (Join-Path $repoRoot ".git\REBASE_HEAD"))
+  )
+}
+
+function Get-StashReference {
+  try {
+    return ((Invoke-GitCapture -Args @("rev-parse", "--verify", "refs/stash")) | Out-String).Trim()
+  } catch {
+    return $null
+  }
+}
+
+function Get-MainSyncState {
+  $countsText = ((Invoke-GitCapture -Args @("rev-list", "--left-right", "--count", "main...origin/main")) | Out-String).Trim()
+  $counts = $countsText -split "\s+"
+  $ahead = [int]$counts[0]
+  $behind = [int]$counts[1]
+
+  $state = if ($ahead -gt 0 -and $behind -gt 0) {
+    "diverged"
+  } elseif ($ahead -gt 0) {
+    "ahead"
+  } elseif ($behind -gt 0) {
+    "behind"
+  } else {
+    "current"
+  }
+
+  return @{
+    Ahead = $ahead
+    Behind = $behind
+    State = $state
+  }
+}
+
+function Sync-LocalMainIfNeeded {
+  Update-Status -Stage "Sync Main"
+
+  & git -c core.safecrlf=false fetch origin
+  if ($LASTEXITCODE -ne 0) {
+    Update-Status -FinalStatus "FAILED" -Summary "Fetching origin failed." -NextStep "Fix the git fetch error shown above."
+    throw "Git fetch failed."
+  }
+
+  $mainSyncState = Get-MainSyncState
+  switch ($mainSyncState.State) {
+    "current" {
+      $status.MainSync = "Already current"
+      return
+    }
+    "ahead" {
+      $status.MainSync = "Manual sync required"
+      Update-Status -FinalStatus "ACTION NEEDED" -Summary "Local main is ahead of origin/main." -NextStep "Push or reconcile local main manually, then rerun update-gallery.bat."
+      throw "Local main is ahead of origin/main."
+    }
+    "diverged" {
+      $status.MainSync = "Manual sync required"
+      Update-Status -FinalStatus "ACTION NEEDED" -Summary "Local main has diverged from origin/main." -NextStep "Reconcile local main manually, then rerun update-gallery.bat."
+      throw "Local main has diverged from origin/main."
+    }
+  }
+
+  $stashRefBefore = Get-StashReference
+  $stashRefAfter = $stashRefBefore
+  $createdStash = $false
+  $galleryChanges = Get-GalleryStatus
+
+  if ($galleryChanges.Count -gt 0) {
+    & git -c core.safecrlf=false stash push --include-untracked -m "gallery-sync-main-sync" -- $galleryJson $galleryRoot
+    if ($LASTEXITCODE -ne 0) {
+      Update-Status -FinalStatus "FAILED" -Summary "Could not temporarily stash gallery changes." -NextStep "Resolve the git stash error shown above."
+      throw "Unable to stash gallery changes before syncing main."
+    }
+
+    $stashRefAfter = Get-StashReference
+    $createdStash = $stashRefAfter -and $stashRefAfter -ne $stashRefBefore
+  }
+
+  & git -c core.safecrlf=false merge --ff-only origin/main
+  if ($LASTEXITCODE -ne 0) {
+    Update-Status -FinalStatus "FAILED" -Summary "Fast-forwarding local main failed." -NextStep "Reconcile local main manually, then rerun update-gallery.bat."
+    throw "Fast-forwarding local main failed."
+  }
+
+  $status.MainSync = "Auto-fast-forwarded main to origin/main"
+
+  if ($createdStash) {
+    & git -c core.safecrlf=false stash apply $stashRefAfter
+    if ($LASTEXITCODE -ne 0) {
+      $status.MainSync = "Manual sync required"
+      Update-Status -FinalStatus "ACTION NEEDED" -Summary "Gallery changes conflict with the updated main branch." -NextStep "Resolve the restored gallery conflicts on main, or abort and reapply your changes manually."
+      throw "Gallery changes conflict with the updated main branch."
+    }
+
+    & git -c core.safecrlf=false stash drop $stashRefAfter *> $null
+  }
+}
+
 function Update-Status {
   param(
     [string]$Stage,
@@ -269,12 +372,198 @@ function Enable-PullRequestAutoMerge {
   }
 }
 
+function Merge-PullRequestNow {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$PrUrl
+  )
+
+  $mergeFlag = "--$defaultMergeMethod"
+  $output = & gh pr merge $mergeFlag $PrUrl 2>&1
+  if ($LASTEXITCODE -ne 0) {
+    throw (($output | Out-String).Trim())
+  }
+}
+
+function Get-PullRequestAutomationState {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$PrUrl
+  )
+
+  $output = & gh pr view $PrUrl --json state,autoMergeRequest,mergeable,mergeStateStatus 2>&1
+  if ($LASTEXITCODE -ne 0) {
+    throw (($output | Out-String).Trim())
+  }
+
+  $text = ($output | Out-String).Trim()
+  if ([string]::IsNullOrWhiteSpace($text)) {
+    throw "GitHub returned an empty response while checking PR state."
+  }
+
+  return ($text | ConvertFrom-Json)
+}
+
+function Resolve-PullRequestAutoMerge {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$PrUrl
+  )
+
+  $attemptErrors = New-Object System.Collections.Generic.List[string]
+
+  for ($attempt = 1; $attempt -le 3; $attempt++) {
+    try {
+      $prState = Get-PullRequestAutomationState -PrUrl $PrUrl
+
+      if ($prState.state -eq "MERGED") {
+        return @{
+          Success = $true
+          AutoMergeState = "Merged"
+          Summary = "PR merged successfully."
+          NextStep = "No further GitHub action required."
+        }
+      }
+
+      if ($null -ne $prState.autoMergeRequest) {
+        return @{
+          Success = $true
+          AutoMergeState = "Enabled"
+          Summary = "PR created and auto-merge enabled."
+          NextStep = "No further GitHub action required."
+        }
+      }
+
+      $isReadyToMergeNow = $prState.mergeStateStatus -eq "CLEAN" -or $prState.mergeable -eq "MERGEABLE"
+      if ($isReadyToMergeNow) {
+        Merge-PullRequestNow -PrUrl $PrUrl
+        return @{
+          Success = $true
+          AutoMergeState = "Merged"
+          Summary = "PR merged successfully."
+          NextStep = "No further GitHub action required."
+        }
+      }
+
+      Enable-PullRequestAutoMerge -PrUrl $PrUrl
+      return @{
+        Success = $true
+        AutoMergeState = "Enabled"
+        Summary = "PR created and auto-merge enabled."
+        NextStep = "No further GitHub action required."
+      }
+    } catch {
+      $errorText = $_.Exception.Message
+      if (-not [string]::IsNullOrWhiteSpace($errorText)) {
+        $attemptErrors.Add($errorText)
+      }
+
+      if ($attempt -eq 3) {
+        break
+      }
+
+      Start-Sleep -Seconds 2
+      try {
+        $postErrorState = Get-PullRequestAutomationState -PrUrl $PrUrl
+        if ($postErrorState.state -eq "MERGED") {
+          return @{
+            Success = $true
+            AutoMergeState = "Merged"
+            Summary = "PR merged successfully."
+            NextStep = "No further GitHub action required."
+          }
+        }
+
+        if ($null -ne $postErrorState.autoMergeRequest) {
+          return @{
+            Success = $true
+            AutoMergeState = "Enabled"
+            Summary = "PR created and auto-merge enabled."
+            NextStep = "No further GitHub action required."
+          }
+        }
+
+        if ($postErrorState.mergeStateStatus -eq "CLEAN" -or $postErrorState.mergeable -eq "MERGEABLE") {
+          Merge-PullRequestNow -PrUrl $PrUrl
+          return @{
+            Success = $true
+            AutoMergeState = "Merged"
+            Summary = "PR merged successfully."
+            NextStep = "No further GitHub action required."
+          }
+        }
+      } catch {
+        $stateError = $_.Exception.Message
+        if (-not [string]::IsNullOrWhiteSpace($stateError)) {
+          $attemptErrors.Add("PR status check failed: $stateError")
+        }
+      }
+    }
+  }
+
+  try {
+    $finalPrState = Get-PullRequestAutomationState -PrUrl $PrUrl
+    if ($finalPrState.state -eq "MERGED") {
+      return @{
+        Success = $true
+        AutoMergeState = "Merged"
+        Summary = "PR merged successfully."
+        NextStep = "No further GitHub action required."
+      }
+    }
+
+    if ($null -ne $finalPrState.autoMergeRequest) {
+      return @{
+        Success = $true
+        AutoMergeState = "Enabled"
+        Summary = "PR created and auto-merge enabled."
+        NextStep = "No further GitHub action required."
+      }
+    }
+
+    if ($finalPrState.mergeStateStatus -eq "CLEAN" -or $finalPrState.mergeable -eq "MERGEABLE") {
+      try {
+        Merge-PullRequestNow -PrUrl $PrUrl
+        return @{
+          Success = $true
+          AutoMergeState = "Merged"
+          Summary = "PR merged successfully."
+          NextStep = "No further GitHub action required."
+        }
+      } catch {
+        $finalMergeError = $_.Exception.Message
+        if (-not [string]::IsNullOrWhiteSpace($finalMergeError)) {
+          $attemptErrors.Add("Immediate merge failed: $finalMergeError")
+        }
+      }
+    }
+  } catch {
+    $finalStateError = $_.Exception.Message
+    if (-not [string]::IsNullOrWhiteSpace($finalStateError)) {
+      $attemptErrors.Add("Final PR status check failed: $finalStateError")
+    }
+  }
+
+  $detail = @($attemptErrors | Where-Object { -not [string]::IsNullOrWhiteSpace($_) } | Select-Object -Unique) -join " | "
+  if ([string]::IsNullOrWhiteSpace($detail)) {
+    $detail = "GitHub did not confirm auto-merge."
+  }
+
+  return @{
+    Success = $false
+    AutoMergeState = "Failed to enable"
+    Summary = "PR created, but auto-merge could not be enabled."
+    NextStep = "Open the PR URL to review the blocking rule or merge manually. GitHub said: $detail"
+  }
+}
+
 function Write-ResultFile {
   $lines = @(
     "Timestamp: $($status.Timestamp)",
     "Repository: $($status.RepoName)",
     "Repo Path: $($status.RepoPath)",
     "Started Branch: $($status.StartedBranch)",
+    "Main Sync: $($status.MainSync)",
     "Branch: $($status.BranchName)",
     "Commit: $($status.CommitHash)",
     "PR URL: $($status.PrUrl)",
@@ -301,6 +590,7 @@ function Write-StatusSummary {
   Write-Host "$label $($status.Summary)"
   Write-Host "Stage: $($status.Stage)"
   Write-Host "Started Branch: $($status.StartedBranch)"
+  Write-Host "Main Sync: $($status.MainSync)"
   Write-Host "Branch: $($status.BranchName)"
   Write-Host "Commit: $($status.CommitHash)"
   Write-Host "PR URL: $($status.PrUrl)"
@@ -323,6 +613,29 @@ try {
     throw "Merge in progress. Resolve or abort before syncing."
   }
 
+  if (Test-RebaseInProgress) {
+    $status.MainSync = "Manual sync required"
+    Update-Status -Stage "Preflight" -FinalStatus "FAILED" -Summary "Rebase already in progress." -NextStep "Run git rebase --abort or finish the rebase, then rerun update-gallery.bat."
+    throw "Rebase already in progress."
+  }
+
+  Update-Status -Stage "Preflight"
+  $stagedOutsideGallery = @(Get-StagedPaths | Where-Object { -not (Test-IsGalleryPath $_) })
+  if ($stagedOutsideGallery.Count -gt 0) {
+    Update-Status -Stage "Preflight" -FinalStatus "FAILED" -Summary "Staged files outside the gallery flow were detected." -NextStep "Unstage or commit non-gallery files separately, then rerun."
+    throw "Staged files outside the gallery flow were detected: $($stagedOutsideGallery -join ', ')"
+  }
+
+  $changedOutsideGallery = @(Get-ChangedPaths | Where-Object { -not (Test-IsGalleryPath $_) })
+  if ($changedOutsideGallery.Count -gt 0) {
+    Update-Status -Stage "Preflight" -FinalStatus "FAILED" -Summary "Changes outside the gallery flow were detected." -NextStep "Commit, stash, or discard non-gallery files separately, then rerun."
+    throw "Changes outside the gallery flow were detected: $($changedOutsideGallery -join ', ')"
+  }
+
+  if ($status.StartedBranch -eq "main") {
+    Sync-LocalMainIfNeeded
+  }
+
   Update-Status -Stage "Build"
   & node "scripts/build-gallery.mjs"
   if ($LASTEXITCODE -ne 0) {
@@ -330,23 +643,10 @@ try {
     throw "Gallery build failed."
   }
 
-  Update-Status -Stage "Preflight"
   $galleryStatus = Get-GalleryStatus
   if (-not $galleryStatus) {
     Update-Status -FinalStatus "SUCCESS" -Summary "Nothing to commit." -NextStep "No further action required." -AutoMergeState "Not needed"
   } else {
-    $stagedOutsideGallery = @(Get-StagedPaths | Where-Object { -not (Test-IsGalleryPath $_) })
-    if ($stagedOutsideGallery.Count -gt 0) {
-      Update-Status -Stage "Preflight" -FinalStatus "FAILED" -Summary "Staged files outside the gallery flow were detected." -NextStep "Unstage or commit non-gallery files separately, then rerun."
-      throw "Staged files outside the gallery flow were detected: $($stagedOutsideGallery -join ', ')"
-    }
-
-    $changedOutsideGallery = @(Get-ChangedPaths | Where-Object { -not (Test-IsGalleryPath $_) })
-    if ($changedOutsideGallery.Count -gt 0) {
-      Update-Status -Stage "Preflight" -FinalStatus "FAILED" -Summary "Changes outside the gallery flow were detected." -NextStep "Commit, stash, or discard non-gallery files separately, then rerun."
-      throw "Changes outside the gallery flow were detected: $($changedOutsideGallery -join ', ')"
-    }
-
     Update-Status -Stage "Stage"
     & git -c core.safecrlf=false add -- $galleryJson $galleryRoot
     & git -c core.safecrlf=false diff --cached --quiet
@@ -387,23 +687,7 @@ try {
 
       $shouldAutomatePr = $startedOnMain -or $currentBranch.StartsWith("codex/gallery-update-")
 
-      if ($createdBranch) {
-        Write-Host "Fetching latest main before pushing branch..."
-        Update-Status -Stage "Rebase"
-        & git -c core.safecrlf=false fetch origin
-        if ($LASTEXITCODE -ne 0) {
-          Update-Status -FinalStatus "FAILED" -Summary "Fetching origin failed." -NextStep "Fix the git fetch error shown above."
-          throw "Git fetch failed."
-        }
-
-        & git -c core.safecrlf=false rebase origin/main
-        if ($LASTEXITCODE -ne 0) {
-          Update-Status -FinalStatus "FAILED" -Summary "Rebase onto origin/main failed." -NextStep "Resolve the rebase, then continue or rerun the workflow."
-          throw "Rebase onto origin/main failed."
-        }
-
-        $status.CommitHash = Get-CommitHash
-      } else {
+      if (-not $createdBranch) {
         & git -c core.safecrlf=false rev-parse --abbrev-ref --symbolic-full-name "@{u}" *> $null
         if ($LASTEXITCODE -ne 0) {
           Update-Status -FinalStatus "FAILED" -Summary "No upstream branch is configured." -NextStep "Run git push -u origin $currentBranch once, then rerun the workflow."
@@ -446,10 +730,14 @@ try {
 
         try {
           Update-Status -Stage "Auto-Merge"
-          Enable-PullRequestAutoMerge -PrUrl $status.PrUrl
-          Update-Status -FinalStatus "SUCCESS" -Summary "PR created and auto-merge enabled." -NextStep "No further GitHub action required." -AutoMergeState "Enabled"
+          $autoMergeResult = Resolve-PullRequestAutoMerge -PrUrl $status.PrUrl
+          if ($autoMergeResult.Success) {
+            Update-Status -FinalStatus "SUCCESS" -Summary $autoMergeResult.Summary -NextStep $autoMergeResult.NextStep -AutoMergeState $autoMergeResult.AutoMergeState
+          } else {
+            Update-Status -FinalStatus "ACTION NEEDED" -Summary $autoMergeResult.Summary -NextStep $autoMergeResult.NextStep -AutoMergeState $autoMergeResult.AutoMergeState
+          }
         } catch {
-          Update-Status -FinalStatus "ACTION NEEDED" -Summary "PR created, but auto-merge could not be enabled." -NextStep "Open the PR URL to review the blocking rule or merge manually." -AutoMergeState "Failed to enable"
+          Update-Status -FinalStatus "ACTION NEEDED" -Summary "PR created, but auto-merge verification failed." -NextStep "Open the PR URL to review the PR manually. GitHub said: $($_.Exception.Message)" -AutoMergeState "Verification failed"
           throw
         }
       }

@@ -25,6 +25,15 @@ const CATEGORY_DESCRIPTIONS = {
     "Custom milling and material preparation with true stock, clean profiles, and surfaces ready for joinery and final build."
 };
 
+function buildVersionedAssetUrl(src, version) {
+  if (!version) {
+    return src;
+  }
+
+  const separator = src.includes("?") ? "&" : "?";
+  return `${src}${separator}v=${encodeURIComponent(version)}`;
+}
+
 function setCategorySearchEngineTags(categoryKey) {
   const isCategoryPage = Boolean(CATEGORY_TITLES[categoryKey]);
   const readableTitle = CATEGORY_TITLES[categoryKey] || "Portfolio";
@@ -139,9 +148,10 @@ if (!container || !titleElement) {
   }
 
   // Load photos for that category
-  fetch("assets/data/gallery.json")
+  fetch(`assets/data/gallery.json?ts=${Date.now()}`, { cache: "no-store" })
     .then((response) => response.json())
     .then((data) => {
+      const galleryVersion = data.version;
       const photos = (data.photos || []).filter(
         (p) => p.category === categoryId
       );
@@ -156,11 +166,12 @@ if (!container || !titleElement) {
 
       photos.forEach((photo) => {
         const link = document.createElement("a");
-        link.href = photo.src;
+        const versionedSrc = buildVersionedAssetUrl(photo.src, galleryVersion);
+        link.href = versionedSrc;
         link.setAttribute("data-lightbox", "portfolio");
 
         const img = document.createElement("img");
-        img.src = photo.src;
+        img.src = versionedSrc;
         img.alt = photo.filename || "Portfolio photo";
         img.loading = "lazy";
         img.decoding = "async";

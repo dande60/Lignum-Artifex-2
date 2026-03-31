@@ -10,6 +10,18 @@ const collator = new Intl.Collator("en", { numeric: true, sensitivity: "base" })
 
 const toPosixPath = (value) => value.split(path.sep).join("/");
 
+async function updateLatestModified(targetPath, currentLatest) {
+  try {
+    const stats = await fs.stat(targetPath);
+    return Math.max(currentLatest, stats.mtimeMs);
+  } catch (error) {
+    if (error?.code === "ENOENT") {
+      return currentLatest;
+    }
+    throw error;
+  }
+}
+
 async function readOrderFile(categoryDir) {
   const orderPath = path.join(categoryDir, "order.txt");
 
@@ -42,9 +54,14 @@ const categories = categoryEntries
   .sort((a, b) => collator.compare(a, b));
 
 const photos = [];
+let latestModifiedMs = 0;
 
 for (const category of categories) {
   const categoryDir = path.join(GALLERY_DIR, category);
+  latestModifiedMs = await updateLatestModified(
+    path.join(categoryDir, "order.txt"),
+    latestModifiedMs
+  );
   let entries = [];
 
   try {
@@ -81,6 +98,10 @@ for (const category of categories) {
   }
 
   for (const [index, filename] of orderedFiles.entries()) {
+    latestModifiedMs = await updateLatestModified(
+      path.join(categoryDir, filename),
+      latestModifiedMs
+    );
     const relativePath = toPosixPath(
       path.join("assets", "images", "gallery", category, filename)
     );
@@ -95,6 +116,7 @@ for (const category of categories) {
 
 const output = {
   categories,
+  version: latestModifiedMs ? String(Math.trunc(latestModifiedMs)) : null,
   photos,
 };
 
