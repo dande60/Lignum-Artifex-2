@@ -372,6 +372,19 @@ function Enable-PullRequestAutoMerge {
   }
 }
 
+function Merge-PullRequestNow {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string]$PrUrl
+  )
+
+  $mergeFlag = "--$defaultMergeMethod"
+  $output = & gh pr merge $mergeFlag $PrUrl 2>&1
+  if ($LASTEXITCODE -ne 0) {
+    throw (($output | Out-String).Trim())
+  }
+}
+
 function Get-PullRequestAutomationState {
   param(
     [Parameter(Mandatory = $true)]
@@ -416,6 +429,24 @@ function Resolve-PullRequestAutoMerge {
       $attemptErrors.Add($errorText)
     }
 
+    $shouldMergeNow = $errorText -match "Pull request is in clean status" -or $errorText -match "enablePullRequestAutoMerge"
+    if ($shouldMergeNow) {
+      try {
+        Merge-PullRequestNow -PrUrl $PrUrl
+        return @{
+          Success = $true
+          AutoMergeState = "Merged"
+          Summary = "PR merged successfully."
+          NextStep = "No further GitHub action required."
+        }
+      } catch {
+        $mergeNowError = $_.Exception.Message
+        if (-not [string]::IsNullOrWhiteSpace($mergeNowError)) {
+          $attemptErrors.Add("Immediate merge failed: $mergeNowError")
+        }
+      }
+    }
+
     Start-Sleep -Seconds 2
 
     try {
@@ -426,6 +457,23 @@ function Resolve-PullRequestAutoMerge {
           AutoMergeState = "Merged"
           Summary = "PR merged successfully."
           NextStep = "No further GitHub action required."
+        }
+      }
+
+      if ($prState.mergeable -eq "MERGEABLE") {
+        try {
+          Merge-PullRequestNow -PrUrl $PrUrl
+          return @{
+            Success = $true
+            AutoMergeState = "Merged"
+            Summary = "PR merged successfully."
+            NextStep = "No further GitHub action required."
+          }
+        } catch {
+          $mergeableError = $_.Exception.Message
+          if (-not [string]::IsNullOrWhiteSpace($mergeableError)) {
+            $attemptErrors.Add("Immediate merge failed: $mergeableError")
+          }
         }
       }
 
