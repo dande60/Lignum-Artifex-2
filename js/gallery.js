@@ -18,9 +18,19 @@ const CATEGORY_ORDER = [
   "cottage-life"
 ];
 
-fetch("assets/data/gallery.json")
+function buildVersionedAssetUrl(src, version) {
+  if (!version) {
+    return src;
+  }
+
+  const separator = src.includes("?") ? "&" : "?";
+  return `${src}${separator}v=${encodeURIComponent(version)}`;
+}
+
+fetch(`assets/data/gallery.json?ts=${Date.now()}`, { cache: "no-store" })
   .then((response) => response.json())
   .then((data) => {
+    const galleryVersion = data.version;
     const sortedCategories = [...data.categories].sort((a, b) => {
       const orderA = CATEGORY_ORDER.indexOf(a);
       const orderB = CATEGORY_ORDER.indexOf(b);
@@ -50,7 +60,7 @@ fetch("assets/data/gallery.json")
         photos.find((p) => p.order === 1) ||
         photos.find((p) => (p.filename || "").toLowerCase() === "cover.jpg") ||
         photos[0];
-      img.src = cover.src;
+      img.src = buildVersionedAssetUrl(cover.src, galleryVersion);
       img.alt = `${CATEGORY_TITLES[category] || category} portfolio cover`;
       img.loading = "lazy";
       img.decoding = "async";
