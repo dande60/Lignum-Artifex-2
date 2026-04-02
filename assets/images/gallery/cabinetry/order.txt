@@ -7,8 +7,6 @@ IMG_1126.jpg
 IMG_1127.jpg
 high-gloss.png
 high-gloss2.png
-IMG_1751.JPG
-IMG_E1753.JPG
 IMG_3084.jpg
 IMG_3086.jpg
 IMG_3089.jpg
@@ -17,3 +15,6 @@ IMG_3302.jpg
 IMG_3836.jpg
 IMG_4684.jpg
 wine-rack-pegs.jpg
+IMG_E1743.JPG
+IMG_1751.JPG
+IMG_1753.JPG
