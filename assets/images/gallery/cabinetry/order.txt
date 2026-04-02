@@ -5,6 +5,8 @@ IMG_1123.jpg
 IMG_1125.jpg
 IMG_1126.jpg
 IMG_1127.jpg
+high-gloss.png
+high-gloss2.png
 IMG_1751.JPG
 IMG_1753.JPG
 IMG_3084.jpg
