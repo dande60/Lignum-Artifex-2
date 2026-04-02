@@ -7,7 +7,7 @@
     "job",
     "milling"
   ],
-  "version": "1775142061376",
+  "version": "1775142297871",
   "photos": [
     {
       "category": "cabinetry",
@@ -65,50 +65,50 @@
     },
     {
       "category": "cabinetry",
-      "src": "assets/images/gallery/cabinetry/IMG_1751.JPG",
-      "filename": "IMG_1751.JPG",
-      "order": 10
-    },
-    {
-      "category": "cabinetry",
       "src": "assets/images/gallery/cabinetry/IMG_3084.jpg",
       "filename": "IMG_3084.jpg",
-      "order": 11
+      "order": 10
     },
     {
       "category": "cabinetry",
       "src": "assets/images/gallery/cabinetry/IMG_3086.jpg",
       "filename": "IMG_3086.jpg",
-      "order": 12
+      "order": 11
     },
     {
       "category": "cabinetry",
       "src": "assets/images/gallery/cabinetry/IMG_3089.jpg",
       "filename": "IMG_3089.jpg",
-      "order": 13
+      "order": 12
     },
     {
       "category": "cabinetry",
       "src": "assets/images/gallery/cabinetry/IMG_3301.jpg",
       "filename": "IMG_3301.jpg",
-      "order": 14
+      "order": 13
     },
     {
       "category": "cabinetry",
       "src": "assets/images/gallery/cabinetry/IMG_3302.jpg",
       "filename": "IMG_3302.jpg",
-      "order": 15
+      "order": 14
     },
     {
       "category": "cabinetry",
       "src": "assets/images/gallery/cabinetry/IMG_4684.jpg",
       "filename": "IMG_4684.jpg",
-      "order": 16
+      "order": 15
     },
     {
       "category": "cabinetry",
       "src": "assets/images/gallery/cabinetry/wine-rack-pegs.jpg",
       "filename": "wine-rack-pegs.jpg",
+      "order": 16
+    },
+    {
+      "category": "cabinetry",
+      "src": "assets/images/gallery/cabinetry/IMG_1751.JPG",
+      "filename": "IMG_1751.JPG",
       "order": 17
     },
     {
