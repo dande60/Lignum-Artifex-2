@@ -645,10 +645,10 @@ body {
 
 .cta-choice-row {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 24px;
+  grid-template-columns: 1fr;
+  gap: 20px;
   width: 100%;
-  max-width: 560px;
+  max-width: 340px;
 }
 
 .cta-choice {
@@ -1295,8 +1295,7 @@ body {
   .feature-grid,
   .story-panel,
   .contact-layout,
-  .services-grid,
-  .cta-choice-row {
+  .services-grid {
     grid-template-columns: 1fr;
   }
 
