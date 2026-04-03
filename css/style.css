@@ -1096,6 +1096,12 @@ body {
   max-width: 720px;
 }
 
+.services-cta-actions {
+  display: grid;
+  gap: 18px;
+  min-width: 280px;
+}
+
 .portfolio-cta-panel {
   margin-top: 12px;
   display: flex;
@@ -1111,6 +1117,12 @@ body {
 .portfolio-cta-panel p {
   margin: 0;
   max-width: 720px;
+}
+
+.portfolio-cta-actions {
+  display: grid;
+  gap: 18px;
+  min-width: 280px;
 }
 
 .site-footer {
