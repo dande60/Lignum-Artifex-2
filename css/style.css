@@ -1126,6 +1126,12 @@ body {
   max-width: 720px;
 }
 
+.services-cta-actions {
+  display: grid;
+  gap: 28px;
+  min-width: 340px;
+}
+
 .portfolio-cta-panel {
   margin-top: 12px;
   display: flex;
