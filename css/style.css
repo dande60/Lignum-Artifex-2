@@ -1102,6 +1102,18 @@ body {
   min-width: 280px;
 }
 
+.services-cta-actions .button-link-secondary,
+.services-cta-actions .button-link-secondary:hover,
+.services-cta-actions .button-link-secondary:focus,
+.portfolio-cta-actions .button-link-secondary,
+.portfolio-cta-actions .button-link-secondary:hover,
+.portfolio-cta-actions .button-link-secondary:focus {
+  background: rgba(176, 158, 128, 0.14);
+  color: var(--primary);
+  border: 1px solid rgba(176, 158, 128, 0.52);
+  box-shadow: none;
+}
+
 .portfolio-cta-panel {
   margin-top: 12px;
   display: flex;
