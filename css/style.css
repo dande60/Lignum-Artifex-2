@@ -634,6 +634,36 @@ body {
   margin-top: 10px;
 }
 
+.cta-guidance {
+  margin: 14px 0 0;
+  max-width: 720px;
+  text-align: center;
+  color: rgba(233, 233, 233, 0.86);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+.cta-choice-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  width: 100%;
+  max-width: 560px;
+}
+
+.cta-choice {
+  display: grid;
+  gap: 10px;
+}
+
+.cta-choice-label {
+  margin: 0;
+  color: rgba(25, 37, 55, 0.72);
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+}
+
 .button-link {
   display: inline-flex;
   align-items: center;
@@ -1255,7 +1285,8 @@ body {
   .feature-grid,
   .story-panel,
   .contact-layout,
-  .services-grid {
+  .services-grid,
+  .cta-choice-row {
     grid-template-columns: 1fr;
   }
 
