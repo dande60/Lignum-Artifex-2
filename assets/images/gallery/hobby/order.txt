@@ -1,5 +1,6 @@
 cover.jpg
 Firemen2.jpg
+guitar-pizza-peel.png
 IMG_1493.JPG
 IMG_1496.JPG
 IMG_1503.JPG
@@ -12,4 +13,3 @@ IMG_2199.jpg
 LKJE8383.JPG
 samurai board.png
 xmas sled ornament.png
-
