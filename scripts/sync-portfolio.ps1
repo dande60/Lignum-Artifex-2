@@ -173,9 +173,23 @@ function Test-RebaseInProgress {
   )
 }
 
-function Get-StashReference {
+function Get-StashHeadCommit {
   try {
     return ((Invoke-GitCapture -Args @("rev-parse", "--verify", "refs/stash")) | Out-String).Trim()
+  } catch {
+    return $null
+  }
+}
+
+function Get-LatestStashReference {
+  try {
+    $output = Invoke-GitCapture -Args @("stash", "list", "--format=%gd", "-n", "1")
+    $cleanOutput = Get-CleanGitLines $output
+    if (-not $cleanOutput) {
+      return $null
+    }
+
+    return $cleanOutput[0].Trim()
   } catch {
     return $null
   }
@@ -231,8 +245,8 @@ function Sync-LocalMainIfNeeded {
     }
   }
 
-  $stashRefBefore = Get-StashReference
-  $stashRefAfter = $stashRefBefore
+  $stashHeadBefore = Get-StashHeadCommit
+  $stashRefAfter = $null
   $createdStash = $false
   $galleryChanges = Get-GalleryStatus
 
@@ -243,8 +257,9 @@ function Sync-LocalMainIfNeeded {
       throw "Unable to stash gallery changes before syncing main."
     }
 
-    $stashRefAfter = Get-StashReference
-    $createdStash = $stashRefAfter -and $stashRefAfter -ne $stashRefBefore
+    $stashHeadAfter = Get-StashHeadCommit
+    $stashRefAfter = Get-LatestStashReference
+    $createdStash = $stashRefAfter -and $stashHeadAfter -and $stashHeadAfter -ne $stashHeadBefore
   }
 
   & git -c core.safecrlf=false merge --ff-only origin/main
