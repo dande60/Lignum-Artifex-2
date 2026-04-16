@@ -7,7 +7,7 @@
     "job",
     "milling"
   ],
-  "version": "1775497140943",
+  "version": "1776358114527",
   "photos": [
     {
       "category": "cabinetry",
@@ -209,75 +209,87 @@
     },
     {
       "category": "hobby",
+      "src": "assets/images/gallery/hobby/IMG_4351.jpg",
+      "filename": "IMG_4351.jpg",
+      "order": 4
+    },
+    {
+      "category": "hobby",
+      "src": "assets/images/gallery/hobby/IMG_4359.jpg",
+      "filename": "IMG_4359.jpg",
+      "order": 5
+    },
+    {
+      "category": "hobby",
       "src": "assets/images/gallery/hobby/IMG_1493.JPG",
       "filename": "IMG_1493.JPG",
-      "order": 4
+      "order": 6
     },
     {
       "category": "hobby",
       "src": "assets/images/gallery/hobby/IMG_1496.JPG",
       "filename": "IMG_1496.JPG",
-      "order": 5
+      "order": 7
     },
     {
       "category": "hobby",
       "src": "assets/images/gallery/hobby/IMG_1503.JPG",
       "filename": "IMG_1503.JPG",
-      "order": 6
+      "order": 8
     },
     {
       "category": "hobby",
       "src": "assets/images/gallery/hobby/IMG_1645.JPG",
       "filename": "IMG_1645.JPG",
-      "order": 7
+      "order": 9
     },
     {
       "category": "hobby",
       "src": "assets/images/gallery/hobby/IMG_0401.JPG",
       "filename": "IMG_0401.JPG",
-      "order": 8
+      "order": 10
     },
     {
       "category": "hobby",
       "src": "assets/images/gallery/hobby/IMG_0561.JPG",
       "filename": "IMG_0561.JPG",
-      "order": 9
+      "order": 11
     },
     {
       "category": "hobby",
       "src": "assets/images/gallery/hobby/IMG_2184.JPG",
       "filename": "IMG_2184.JPG",
-      "order": 10
+      "order": 12
     },
     {
       "category": "hobby",
       "src": "assets/images/gallery/hobby/IMG_2186.JPG",
       "filename": "IMG_2186.JPG",
-      "order": 11
+      "order": 13
     },
     {
       "category": "hobby",
       "src": "assets/images/gallery/hobby/IMG_2199.jpg",
       "filename": "IMG_2199.jpg",
-      "order": 12
+      "order": 14
     },
     {
       "category": "hobby",
       "src": "assets/images/gallery/hobby/LKJE8383.JPG",
       "filename": "LKJE8383.JPG",
-      "order": 13
+      "order": 15
     },
     {
       "category": "hobby",
       "src": "assets/images/gallery/hobby/samurai board.png",
       "filename": "samurai board.png",
-      "order": 14
+      "order": 16
     },
     {
       "category": "hobby",
       "src": "assets/images/gallery/hobby/xmas sled ornament.png",
       "filename": "xmas sled ornament.png",
-      "order": 15
+      "order": 17
     },
     {
       "category": "job",
