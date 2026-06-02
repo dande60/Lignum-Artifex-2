@@ -7,7 +7,7 @@
     "job",
     "milling"
   ],
-  "version": "1776358114527",
+  "version": "1780412473259",
   "photos": [
     {
       "category": "cabinetry",
@@ -290,6 +290,18 @@
       "src": "assets/images/gallery/hobby/xmas sled ornament.png",
       "filename": "xmas sled ornament.png",
       "order": 17
+    },
+    {
+      "category": "hobby",
+      "src": "assets/images/gallery/hobby/Baby-leo.jpg",
+      "filename": "Baby-leo.jpg",
+      "order": 18
+    },
+    {
+      "category": "hobby",
+      "src": "assets/images/gallery/hobby/Baby-Lyra.jpg",
+      "filename": "Baby-Lyra.jpg",
+      "order": 19
     },
     {
       "category": "job",
